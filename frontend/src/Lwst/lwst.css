@@ -1,0 +1,3336 @@
+body {
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    color: white;
+    overflow-x: hidden;
+}
+
+/* Conteneur de la vidéo en fond */
+/* Conteneur de la vidéo en fond */
+.video-background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
+    z-index: -1;
+}
+
+/* Vidéo en arrière-plan */
+.video-background video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Overlay noir semi-transparent */
+.video-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background: rgba(30, 29, 29, 0.5);
+    /* Ajuste l'opacité ici */
+    z-index: -1;
+}
+
+/* Contenu visible au-dessus de l'overlay */
+.app-container {
+    position: relative;
+    z-index: 1;
+    color: white;
+    padding-top: 80px;
+}
+
+
+h1 {
+    margin-top: 140px;  /* Augmentation de la marge pour éviter le chevauchement avec la navbar */
+    text-align: center;
+    color: #ffffff;
+    padding: 20px 0;
+    font-size: 2rem;
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.7);
+}
+
+.edo {
+    position: relative;
+    text-align: center;
+    top: 80px;
+    padding: 15px;
+}
+
+.re {
+    margin-top: 80px;
+    text-align: center;
+    color: #fff;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 50px;
+    padding: 15px;
+    margin: 15px;
+}
+
+.ree {
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 20px;
+    padding: 15px;
+    margin: 15px;
+    position: relative;
+    top: 20px;
+}
+
+.btn1 {
+    padding: 12px;
+    border: none;
+    border-radius: 12px;
+    background-color: rgb(62, 212, 62);
+    color: white;
+    font-family: sans-serif;
+    position: relative;
+    top: 50px;
+}
+
+.btn1:hover {
+    line-height: 15px;
+    background-color: rgb(28, 195, 28);
+}
+
+.com1 {
+    width: 100%;
+    display: flex;
+    gap: 80px;
+    position: relative;
+    left: 30px;
+
+}
+
+.im1 {
+    width: 148px;
+}
+
+.btnn, .btnnn {
+    background: linear-gradient(45deg, #4CAF50, #45a049);
+    color: white;
+    border: none;
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-size: 0.75rem;
+    font-weight: 400;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    min-width: 70px;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+.btnnn {
+    background: linear-gradient(45deg, #f44336, #d32f2f);
+    box-shadow: 0 1px 3px rgba(244, 67, 54, 0.2);
+}
+
+.btnn:hover, .btnnn:hover {
+    transform: translateY(-1px);
+}
+
+.btnn:hover {
+    background: linear-gradient(45deg, #45a049, #4CAF50);
+    box-shadow: 0 2px 4px rgba(76, 175, 80, 0.3);
+}
+
+.btnnn:hover {
+    background: linear-gradient(45deg, #d32f2f, #f44336);
+    box-shadow: 0 2px 4px rgba(244, 67, 54, 0.3);
+}
+
+.btnn:active, .btnnn:active {
+    transform: translateY(0);
+}
+
+.btnn i, .btnnn i {
+    font-size: 0.75rem;
+}
+
+@media (max-width: 768px) {
+    .btnn, .btnnn {
+        padding: 3px 8px;
+        font-size: 0.7rem;
+        min-width: 60px;
+    }
+}
+
+.com1 {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+}
+
+.com1>div {
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 15px;
+    text-align: center;
+    max-width: 300px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: none;
+}
+
+.com1>div:hover {
+    transform: none;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: none;
+}
+
+
+.im1 {
+    width: 100%;
+    height: 350px;
+    object-fit: cover;
+    border-radius: 10px;
+}
+
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    backdrop-filter: blur(5px);
+}
+
+.modal-content {
+    background-color: rgba(45, 41, 41, 0.95);
+    padding: 20px;
+    border-radius: 15px;
+    width: 85%;
+    max-width: 350px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+    text-align: center;
+    border: 1px solid rgba(76, 175, 80, 0.2);
+}
+
+.modal-content h2 {
+    color: #fff;
+    font-size: 1.8rem;
+    margin-bottom: 20px;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.modal-content p {
+    color: #e0e0e0;
+    font-size: 1.1rem;
+    line-height: 1.5;
+    margin-bottom: 15px;
+}
+
+.modal-actions {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.modal-actions button {
+    padding: 6px 16px;
+    border: none;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    min-width: 100px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.modal-actions .btn-annuler {
+    background: linear-gradient(45deg, #f44336, #d32f2f);
+    color: white;
+    box-shadow: 0 2px 6px rgba(244, 67, 54, 0.2);
+}
+
+.modal-actions .btn-annuler:hover {
+    background: linear-gradient(45deg, #d32f2f, #f44336);
+    box-shadow: 0 3px 8px rgba(244, 67, 54, 0.3);
+    transform: translateY(-2px);
+}
+
+.modal-actions .btn-ajt {
+    background: linear-gradient(45deg, #4CAF50, #45a049);
+    color: white;
+    box-shadow: 0 2px 6px rgba(76, 175, 80, 0.2);
+    padding: 8px 20px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    min-width: 120px;
+}
+
+.modal-actions .btn-ajt:hover {
+    background: linear-gradient(45deg, #45a049, #4CAF50);
+    box-shadow: 0 4px 12px rgba(76, 175, 80, 0.3);
+    transform: translateY(-2px);
+}
+
+.modal-actions .btn-ajt:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 6px rgba(76, 175, 80, 0.2);
+}
+
+.modal-actions .btn-ajt i {
+    font-size: 0.9rem;
+    margin-right: 8px;
+    transition: transform 0.3s ease;
+}
+
+.modal-actions .btn-ajt:hover i {
+    transform: rotate(90deg);
+}
+
+@media (max-width: 768px) {
+    .modal-actions {
+        gap: 10px;
+    }
+    
+    .modal-actions button {
+        padding: 5px 14px;
+        font-size: 0.8rem;
+        min-width: 90px;
+    }
+
+    .modal-actions .btn-ajt {
+        padding: 6px 16px;
+        font-size: 0.85rem;
+        min-width: 100px;
+    }
+}
+
+/* Style pour le bouton Ajouter */
+.btn-ajt {
+    background: linear-gradient(45deg, #4CAF50, #45a049);
+    color: white;
+    border: none;
+    padding: 10px 24px;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    box-shadow: 0 2px 6px rgba(76, 175, 80, 0.2);
+}
+
+.btn-ajt:hover {
+    background: linear-gradient(45deg, #45a049, #4CAF50);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(76, 175, 80, 0.3);
+}
+
+.btn-ajt:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 6px rgba(76, 175, 80, 0.2);
+}
+
+.btn-ajt i {
+    font-size: 0.9rem;
+    transition: transform 0.3s ease;
+}
+
+.btn-ajt:hover i {
+    transform: rotate(90deg);
+}
+
+/* Style pour le bouton Confirmer la suppression */
+.btn-confirmer-suppression {
+    background: linear-gradient(45deg, #4CAF50, #45a049);
+    color: white;
+    border: none;
+    padding: 10px 24px;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    box-shadow: 0 2px 6px rgba(76, 175, 80, 0.2);
+}
+
+.btn-confirmer-suppression:hover {
+    background: linear-gradient(45deg, #45a049, #4CAF50);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(76, 175, 80, 0.3);
+}
+
+.btn-confirmer-suppression:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 6px rgba(76, 175, 80, 0.2);
+}
+
+.btn-confirmer-suppression i {
+    font-size: 0.9rem;
+    transition: transform 0.3s ease;
+}
+
+.btn-confirmer-suppression:hover i {
+    transform: rotate(90deg);
+}
+
+@media (max-width: 768px) {
+    .btn-confirmer-suppression,
+    .btn-ajt {
+        padding: 8px 20px;
+        font-size: 0.85rem;
+    }
+}
+
+.btn-annuler {
+    background-color: #f44336;
+    color: white;
+}
+
+.btn-annuler:hover {
+    background-color: #d32f2f;
+    transform: translateY(-2px);
+}
+
+/* Style pour la barre de défilement personnalisée */
+.modal-content::-webkit-scrollbar {
+    width: 8px;
+}
+
+.modal-content::-webkit-scrollbar-track {
+    background: #1a1a1a;
+    border-radius: 4px;
+}
+
+.modal-content::-webkit-scrollbar-thumb {
+    background: #4CAF50;
+    border-radius: 4px;
+}
+
+.modal-content::-webkit-scrollbar-thumb:hover {
+    background: #45a049;
+}
+
+/* Animation du modal */
+@keyframes modalFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.modal-content {
+    animation: modalFadeIn 0.3s ease-out;
+}
+
+.table-container {
+    padding: 20px;
+    background-color: rgba(0, 0, 0, 0.6);
+    border-radius: 10px;
+    max-width: 95%;
+    margin: 20px auto;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+    overflow-x: auto;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+thead {
+    background-color: rgba(31, 192, 13, 0.8);
+}
+
+th {
+    padding: 12px;
+    color: rgb(255, 255, 255);
+    font-size: 1.1rem;
+    text-align: center;
+}
+
+tbody {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+tr:nth-child(even) {
+    background-color: rgba(255, 255, 255, 0.15);
+}
+
+tr:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+td {
+    padding: 12px;
+    text-align: center;
+    font-size: 1rem;
+    color: white;
+}
+
+.btn2 {
+    border: none;
+    background-color: red;
+    /* Force la transparence */
+    cursor: pointer;
+    top: 10px;
+    margin: 0 5px;
+    transition: transform 0.2s ease-in-out;
+}
+
+
+
+/* Empêcher tout changement de fond au hover */
+.btn2:hover {
+    background-color: transparent !important;
+    transform: scale(1.1);
+    /* Effet de zoom léger */
+}
+
+.btn2:first-of-type svg {
+    width: 26px;
+    height: 26px;
+    color: rgb(25, 253, 25);
+}
+
+.btn2:last-of-type svg {
+    width: 24px;
+    height: 22px;
+    color: red;
+}
+
+@media (max-width: 780px) {
+    .table-container {
+        padding: 8px;
+    }
+
+    th,
+    td {
+        font-size: 0.8rem;
+        padding: 8px;
+    }
+
+    .nav a {
+        font-size: 0.9rem;
+    }
+}
+
+.btn {
+    background-color: #ff4136;
+    /* Rouge vif */
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    /* Taille réduite pour un bouton de taille moyenne */
+    font-size: 0.9rem;
+    /* Police de taille moyenne */
+    font-weight: bold;
+    text-align: center;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    display: inline-block;
+    /* Aligner avec d'autres éléments inline */
+    margin: 10px;
+}
+
+/* Hover effect */
+.btn:hover {
+    background-color: #e03131;
+    /* Rouge plus foncé */
+    transform: translateY(-2px);
+    /* Léger soulèvement */
+}
+.btn-modify {
+    background-color: #10d40a;
+    /* Rouge vif */
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    /* Taille réduite pour un bouton de taille moyenne */
+    font-size: 0.9rem;
+    /* Police de taille moyenne */
+    font-weight: bold;
+    text-align: center;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    display: inline-block;
+    /* Aligner avec d'autres éléments inline */
+    margin: 10px;
+}
+
+/* Hover effect */
+.btn-modify:hover {
+    background-color: #45b12d;
+    /* Rouge plus foncé */
+    transform: translateY(-2px);
+    /* Léger soulèvement */
+}
+
+.confirmation-message {
+    position: fixed;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #4caf50;
+    /* Vert pour indiquer le succès */
+    color: white;
+    padding: 15px 30px;
+    border-radius: 5px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+    font-size: 1rem;
+    text-align: center;
+    width: 80%;
+    max-width: 600px;
+    margin-top: 20px;
+    transition: opacity 0.5s ease-in-out;
+    opacity: 1;
+}
+
+.confirmation-message.fade-out {
+    opacity: 0;
+}
+
+.terrain-detail {
+    padding-top: 100px;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    text-align: center;
+    background-color: #191818;
+    background-size: cover;
+    background-position: center;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    color: white;
+}
+
+.terrain-detail h1 {
+    font-size: 2rem;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    margin-bottom: 20px;
+    color: #fff;
+}
+
+.terrain-image {
+    width: 100%;
+    height: auto;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    object-fit: cover;
+}
+
+.terrain-detail p {
+    font-size: 1.1rem;
+    color: #ffffff;
+    font-family: Arial, Helvetica, sans-serif;
+    margin-bottom: 20px;
+}
+
+.terrain-price {
+    font-size: 1.2rem;
+    color: #ff5722;
+    /* Couleur orange pour le prix */
+    font-weight: bold;
+    margin-top: 10px;
+}
+
+.btn-reserve,
+.btn-back {
+    padding: 12px 20px;
+    border: none;
+    border-radius: 5px;
+    background-color: #18d121;
+    color: white;
+    font-size: 1rem;
+    cursor: pointer;
+    margin: 10px;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.btn-reserve:hover,
+.btn-back:hover {
+    background-color: #2e7d32;
+    transform: scale(1.05);
+}
+
+.btn-back {
+    background-color: #f44336;
+    /* Rouge pour le bouton de retour */
+}
+
+.btn-back:hover {
+    background-color: #d32f2f;
+}
+
+.container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.terrain {
+    width: 100%;
+    max-width: 300px;
+    height: 450px;
+    background-color: #000000;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+    display: flex;
+    flex-direction: column;
+    margin: 0 auto;
+    transition: none;
+}
+
+.terrain:hover {
+    transform: none;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+}
+
+.terrain img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    display: block;
+}
+
+.terrain-content {
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    align-items: center;
+    text-align: center;
+}
+
+.terrain h3 {
+    margin-top: 0;
+    font-size: 1.2rem;
+    color: #7CFC00;
+    margin: 0.5rem 0;
+}
+
+.terrain p {
+    color: #e0e0e0;
+    font-size: 0.9rem;
+    line-height: 1.4;
+    margin: 0.5rem 0;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+}
+
+.terrain-price {
+    font-weight: bold;
+    color: #7CFC00;
+    font-size: 1.1rem;
+    margin: 0.5rem 0;
+}
+
+.terrain-actions {
+    margin-top: auto;
+    width: 100%;
+    padding: 1rem;
+    display: flex;
+    gap: 0.5rem;
+    justify-content: center;
+}
+
+.btnn {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 50px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 120px;
+}
+
+.btnnn {
+    background-color: #ff0000;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 50px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 120px;
+}
+
+.btnnn:hover {
+    background-color: #da0000;
+    transform: scale(1.05);
+}
+
+.btnnn i {
+    margin-right: 5px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .container {
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        padding: 10px;
+        gap: 1rem;
+    }
+
+    .terrain {
+        max-width: 250px;
+        height: 400px;
+    }
+
+    .terrain .im1 {
+        height: 180px;
+    }
+}
+
+.btn-modifier {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 12px 0;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+    width: 100%;
+    margin-top: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+}
+
+.btn-modifier:hover {
+    background-color: #45a049;
+}
+
+:root {
+    --primary-blue: #2196F3;
+    --dark-blue: #1976D2;
+    --primary-green: #4CAF50;
+    --dark-green: #388E3C;
+    --primary-red: #f44336;
+    --dark-red: #d32f2f;
+    --white: #ffffff;
+    --shadow-light: rgba(0, 0, 0, 0.15);
+    --shadow-hover: rgba(0, 0, 0, 0.25);
+}
+
+/* Style générique pour tous les boutons */
+.btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    max-width: 360px;
+    padding: 12px 16px;
+    border: none;
+    border-radius: 6px;
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--white);
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 5px var(--shadow-light);
+    background-size: 200% auto;
+    gap: 10px;
+}
+
+/* Icône à gauche du texte */
+.btn i {
+    font-size: 16px;
+    margin-right: 8px;
+}
+
+/* Effet au clic */
+.btn:active {
+    transform: scale(0.98);
+    box-shadow: 0 1px 3px var(--shadow-light);
+}
+
+/* Bouton Voir les détails */
+.btn-view-details {
+    background: linear-gradient(45deg, var(--primary-blue), var(--dark-blue));
+    margin: 16px auto 0;
+}
+
+.btn-view-details:hover {
+    background-position: right center;
+    box-shadow: 0 4px 10px var(--shadow-hover);
+    transform: translateY(-2px);
+}
+
+/* Conteneur des boutons admin */
+.admin-actions {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    margin-top: 16px;
+    width: 100%;
+}
+
+/* Bouton Modifier */
+.btn-modify {
+    background: linear-gradient(45deg, var(--primary-green), var(--dark-green));
+}
+
+.btn-modify:hover {
+    background-position: right center;
+    box-shadow: 0 4px 10px var(--shadow-hover);
+    transform: translateY(-2px);
+}
+
+/* Bouton Supprimer */
+.btn-delete {
+    background: linear-gradient(45deg, var(--primary-red), var(--dark-red));
+}
+
+.btn-delete:hover {
+    background-position: right center;
+    box-shadow: 0 4px 10px var(--shadow-hover);
+    transform: translateY(-2px);
+}
+
+
+@media (max-width: 768px) {
+    .admin-actions {
+        gap: 8px;
+        margin-top: 10px;
+    }
+
+    .admin-actions button {
+        padding: 10px 0;
+        font-size: 13px;
+    }
+
+    .admin-actions button i {
+        font-size: 14px;
+        margin-right: 6px;
+    }
+}
+
+.deletion-message {
+    position: fixed;
+    top: 50px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #f44336;
+    /* Rouge pour indiquer la suppression */
+    color: white;
+    padding: 15px 30px;
+    border-radius: 5px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+    font-size: 1rem;
+    text-align: center;
+    width: 80%;
+    max-width: 600px;
+    margin-top: 20px;
+    transition: opacity 0.5s ease-in-out;
+    opacity: 1;
+}
+
+.deletion-message.fade-out {
+    opacity: 0;
+}
+
+.auth-message {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #f44336;
+    color: white;
+    padding: 20px 40px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+    font-size: 1.1rem;
+    text-align: center;
+    animation: fadeIn 0.3s ease-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translate(-50%, -60%);
+    }
+
+    to {
+        opacity: 1;
+        transform: translate(-50%, -50%);
+    }
+}
+
+/* Styles pour la page des tournois */
+.tournoi-container {
+    padding: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.tournois-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.tournoi-card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    background: rgba(0, 0, 0, 0.7);
+    color: white;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    overflow: hidden;
+    height: 90%;
+}
+
+.tournoi-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.6);
+}
+
+.tournoi-actions {
+    margin-top: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.btn-register, .btn-unregister {
+    width: 100%;
+}
+
+.tournoi-info {
+    flex-grow: 1;
+    margin-bottom: 15px;
+}
+
+.tournoi-info p {
+    margin: 8px 0;
+}
+
+.tournoi-info .description {
+    font-style: italic;
+    margin-top: 15px;
+    color: #cccccc;
+}
+
+.btn-register {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 12px 0;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+    width: 100%;
+    margin-top: 10px;
+}
+
+.btn-register:hover {
+    background-color: #45a049;
+}
+
+.btn-register:disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
+}
+
+.btn-unregister {
+    background-color: #f44336;
+    color: white;
+    border: none;
+    padding: 12px 0;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+    width: 100%;
+    margin-top: 10px;
+}
+
+.btn-unregister:hover {
+    background-color: #d32f2f;
+}
+
+.btn-delete {
+    background-color: #ff0505;
+    color: white;
+    border: none;
+    padding: 12px 0;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+    width: 100%;
+    margin-top: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+}
+
+.btn-delete:hover {
+    background-color: #d32f2f;
+}
+
+.login-required {
+    color: #f2f2f2;
+    text-align: center;
+    margin-top: 10px;
+    font-style: italic;
+}
+
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal-content {
+    background-color: #333333;
+    padding: 20px;
+    border-radius: 8px;
+    width: 500px;
+    max-width: 90%;
+    color: white;
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+.modal-content h2 {
+    color: #4CAF50;
+    margin-top: 0;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #555555;
+    border-radius: 4px;
+    background-color: rgba(0, 0, 0, 0.5);
+    color: #fff;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: #4CAF50;
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+.form-group textarea {
+    resize: vertical;
+    min-height: 120px;
+}
+
+.modal-actions {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.modal-actions button {
+    padding: 6px 16px;
+    border: none;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    min-width: 100px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.modal-actions .btn-annuler {
+    background: linear-gradient(45deg, #f44336, #d32f2f);
+    color: white;
+    box-shadow: 0 2px 6px rgba(244, 67, 54, 0.2);
+}
+
+.modal-actions .btn-annuler:hover {
+    background: linear-gradient(45deg, #d32f2f, #f44336);
+    box-shadow: 0 3px 8px rgba(244, 67, 54, 0.3);
+    transform: translateY(-2px);
+}
+
+.modal-actions .btn-ajt {
+    background: linear-gradient(45deg, #4CAF50, #45a049);
+    color: white;
+    box-shadow: 0 2px 6px rgba(76, 175, 80, 0.2);
+    padding: 8px 20px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    min-width: 120px;
+}
+
+.modal-actions .btn-ajt:hover {
+    background: linear-gradient(45deg, #45a049, #4CAF50);
+    box-shadow: 0 4px 12px rgba(76, 175, 80, 0.3);
+    transform: translateY(-2px);
+}
+
+.modal-actions .btn-ajt:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 6px rgba(76, 175, 80, 0.2);
+}
+
+.modal-actions .btn-ajt i {
+    font-size: 0.9rem;
+    margin-right: 8px;
+    transition: transform 0.3s ease;
+}
+
+.modal-actions .btn-ajt:hover i {
+    transform: rotate(90deg);
+}
+
+@media (max-width: 768px) {
+    .modal-actions {
+        gap: 10px;
+    }
+    
+    .modal-actions button {
+        padding: 5px 14px;
+        font-size: 0.8rem;
+        min-width: 90px;
+    }
+
+    .modal-actions .btn-ajt {
+        padding: 6px 16px;
+        font-size: 0.85rem;
+        min-width: 100px;
+    }
+}
+
+/* Style pour le conteneur admin */
+.admin-controls {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 20px 0;
+    width: 100%;
+}
+
+/* Styles pour la colonne de statut des réservations */
+.status-cell {
+    text-align: center;
+}
+
+.status-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    justify-content: center;
+    align-items: center;
+}
+
+.status-accepted {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    color: #4CAF50;
+    font-weight: 600;
+    padding: 5px 10px;
+    background-color: rgba(76, 175, 80, 0.1);
+    border-radius: 5px;
+    margin-bottom: 5px;
+}
+
+.status-rejected {
+    display: inline-flex;
+    font-size: 1.1rem;
+}
+
+.status-rejected i {
+    color: #f44336;
+    font-size: 1.1rem;
+}
+
+.btn-accept {
+    background: linear-gradient(45deg, #4CAF50, #45a049);
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-weight: 500;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.btn-reject {
+    background: linear-gradient(45deg, #f44336, #d32f2f);
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-weight: 500;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.btn-accept:hover {
+    background: linear-gradient(45deg, #45a049, #4CAF50);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.btn-reject:hover {
+    background: linear-gradient(45deg, #d32f2f, #f44336);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+/* Style pour le tableau des réservations */
+.reservation-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    background-color: rgba(0, 0, 0, 0.7);
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+.reservation-table th {
+    padding: 15px 10px;
+    background-color: rgba(31, 192, 13, 0.8);
+    color: white;
+    text-align: center;
+    font-weight: 600;
+}
+
+.reservation-table td {
+    padding: 12px 10px;
+    text-align: center;
+    color: white;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.reservation-table tr:last-child td {
+    border-bottom: none;
+}
+
+.reservation-table tr.accepted {
+    background-color: rgba(76, 175, 80, 0.1);
+}
+
+.reservation-table tr.pending {
+    background-color: rgba(255, 193, 7, 0.1);
+}
+
+.no-reservations {
+    padding: 30px !important;
+    font-style: italic;
+    color: #ccc !important;
+}
+
+/* Style pour le conteneur des réservations */
+.reservation-container {
+    padding: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.reservation-container h1 {
+    color: white;
+    text-align: center;
+    margin-bottom: 30px;
+    font-size: 2.2rem;
+}
+
+/* Responsive design pour le tableau */
+@media (max-width: 768px) {
+    .reservation-table {
+        display: block;
+        overflow-x: auto;
+    }
+    
+    .reservation-table th,
+    .reservation-table td {
+        padding: 10px 8px;
+        font-size: 0.9rem;
+    }
+    
+    .btn-accept,
+    .btn-modify,
+    .btn {
+        padding: 6px 10px;
+        font-size: 0.8rem;
+    }
+}
+
+/* Styles pour les boutons de paiement */
+.btn-payment {
+    background: linear-gradient(45deg, #4CAF50, #45a049);
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-weight: 500;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    margin: 5px 0;
+}
+
+.btn-payment:hover {
+    background: linear-gradient(45deg, #45a049, #4CAF50);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.payment-success {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    color: #4CAF50;
+    font-weight: 600;
+    padding: 5px 10px;
+    background-color: rgba(76, 175, 80, 0.1);
+    border-radius: 5px;
+}
+
+.payment-cell {
+    text-align: center;
+}
+
+/* Styles pour le filtre de paiement des administrateurs */
+.admin-filter {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    margin: 20px 0;
+    background-color: rgba(0, 0, 0, 0.6);
+    padding: 15px 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.admin-filter label {
+    margin-right: 15px;
+    font-size: 1rem;
+    font-weight: 500;
+    color: #fff;
+}
+
+.payment-filter-select {
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    padding: 10px 15px;
+    border: 1px solid rgba(76, 175, 80, 0.5);
+    border-radius: 5px;
+    font-size: 0.95rem;
+    min-width: 200px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    outline: none;
+}
+
+.payment-filter-select:focus {
+    border-color: #4CAF50;
+    box-shadow: 0 0 0 2px rgba(76, 175, 80, 0.2);
+}
+
+.payment-filter-select option {
+    background-color: #333;
+    color: white;
+    padding: 10px;
+}
+
+@media (max-width: 768px) {
+    .admin-filter {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 12px 15px;
+    }
+    
+    .admin-filter label {
+        margin-bottom: 8px;
+        margin-right: 0;
+    }
+    
+    .payment-filter-select {
+        width: 100%;
+        min-width: unset;
+        padding: 8px 12px;
+    }
+}
+
+/* ... Autres styles existants ... */
+
+/* Styles pour la colonne des jours restants */
+.days-remaining-cell {
+    text-align: center;
+    font-weight: 500;
+}
+
+.days-past {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    color: #f44336;
+    font-weight: 600;
+    padding: 5px 10px;
+    background-color: rgba(244, 67, 54, 0.1);
+    border-radius: 5px;
+}
+
+.days-today {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    color: #ff9800;
+    font-weight: 600;
+    padding: 5px 10px;
+    background-color: rgba(255, 152, 0, 0.1);
+    border-radius: 5px;
+}
+
+.days-soon {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    color: #ff9800;
+    font-weight: 600;
+    padding: 5px 10px;
+    background-color: rgba(255, 152, 0, 0.1);
+    border-radius: 5px;
+}
+
+.days-normal {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    color: #fdfffe;
+    font-weight: 600;
+    padding: 5px 10px;
+    background-color: rgba(76, 175, 80, 0.1);
+    border-radius: 5px;
+}
+
+.days-past i, .days-today i, .days-soon i, .days-normal i {
+    font-size: 1rem;
+}
+
+@media (max-width: 768px) {
+    .days-remaining-cell span {
+        padding: 4px 8px;
+        font-size: 0.85rem;
+    }
+    
+    .days-past i, .days-today i, .days-soon i, .days-normal i {
+        font-size: 0.9rem;
+    }
+}
+
+/* ... Autres styles existants ... */
+
+/* Style pour les boutons de réservation et suppression dans les cartes de terrain */
+.terrain-actions .btnn,
+.terrain-actions .btnnn {
+    padding: 8px 20px;
+    font-size: 0.85rem;
+    min-width: 100px;
+    margin: 3px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    border-radius: 12px;
+    transition: all 0.25s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+.bton{
+    background-color: #0d7ee1;
+    padding: 8px 20px;
+    font-size: 0.85rem;
+    color: white;
+    min-width: 100px;
+    margin: 3px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    border-radius: 12px;
+    transition: all 0.25s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+.bton:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 10px rgba(39, 215, 19, 0.3);
+}
+.bton i {
+    font-size: 0.85rem;
+    margin-right: 4px;
+    color: white;
+}
+.btnnr{
+    background-color: #4CAF50;
+    padding: 8px 20px;
+    font-size: 0.85rem;
+    color: white;
+    min-width: 100px;
+    margin: 3px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    border-radius: 12px;
+    transition: all 0.25s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+.btnnr:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 10px rgba(39, 215, 19, 0.3);
+}
+.btnnr i {
+    font-size: 0.85rem;
+    margin-right: 4px;
+    color: white;
+}
+
+.terrain-actions .btnn:hover,
+.terrain-actions .btnnn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.3);
+}
+
+.terrain-actions .btnn i,
+.terrain-actions .btnnn i {
+    font-size: 0.85rem;
+    margin-right: 4px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .terrain-actions .btnn,
+    .terrain-actions .btnnn {
+        padding: 5px 10px;
+        font-size: 0.8rem;
+        min-width: 90px;
+    }
+    .bton {
+        padding: 5px 10px;
+        font-size: 0.8rem;
+        min-width: 90px;
+    }
+    
+    .terrain-actions .btnn i,
+    .terrain-actions .btnnn i {
+        font-size: 0.8rem;
+    }
+     .bton i {
+        font-size: 0.8rem;
+    }
+}
+
+/* Reste du CSS existant */
+
+.actions .btn-modify,
+.actions .btn {
+    padding: 8px 12px;
+    font-size: 0.85rem;
+    min-width: 90px;
+    margin: 3px;
+    border-radius: 8px;
+}
+
+.actions .btn-modify i,
+.actions .btn i {
+    margin-right: 5px;
+    font-size: 0.8rem;
+}
+
+@media (max-width: 768px) {
+    .actions .btn-modify,
+    .actions .btn {
+        padding: 5px 10px;
+        font-size: 0.8rem;
+        min-width: 80px;
+    }
+}
+
+/* Styles pour la page de détail du tournoi */
+.tournoi-detail-container {
+    max-width: 1200px;
+    margin: 40px auto;
+    padding: 20px;
+    color: white;
+}
+
+.tournoi-detail-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+.tournoi-detail-header h1 {
+    margin: 0;
+    font-size: 2.2rem;
+    flex-grow: 1;
+    text-align: center;
+    color: #4CAF50;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.tournoi-detail-header .btn-back {
+    background-color: #f44336;
+    color: white;
+    border: none;
+    padding: 10px 16px;
+    border-radius: 5px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.tournoi-detail-header .btn-back:hover {
+    background-color: #d32f2f;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.tournoi-detail-info {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+    margin-bottom: 40px;
+}
+
+.tournoi-detail-card, .rules-card {
+    background-color: rgba(0, 0, 0, 0.7);
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+}
+
+.tournoi-detail-card h2, .rules-card h2, .teams-section h2, .bracket-section h2 {
+    color: #4CAF50;
+    font-size: 1.5rem;
+    margin-top: 0;
+    margin-bottom: 20px;
+    border-bottom: 2px solid rgba(76, 175, 80, 0.3);
+    padding-bottom: 10px;
+}
+
+.info-item {
+    margin-bottom: 15px;
+    display: flex;
+    align-items: flex-start;
+}
+
+.info-label {
+    color: #aaa;
+    margin-right: 10px;
+    min-width: 130px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.info-value {
+    color: white;
+    font-weight: 500;
+    flex-grow: 1;
+}
+
+.info-value.description {
+    font-style: italic;
+    line-height: 1.5;
+    color: #ddd;
+}
+
+.rules-list {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+.rules-list li {
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.rules-list li i {
+    color: #4CAF50;
+    font-size: 1.1rem;
+}
+
+.teams-section, .bracket-section {
+    background-color: rgba(0, 0, 0, 0.7);
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 30px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+}
+
+.teams-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+.team-card {
+    background-color: rgba(255, 255, 255, 0.05);
+    border-radius: 8px;
+    padding: 15px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.team-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    border-color: rgba(76, 175, 80, 0.3);
+}
+
+.team-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding-bottom: 10px;
+}
+
+.team-header h3 {
+    margin: 0;
+    color: white;
+    font-size: 1.1rem;
+}
+
+.team-badge {
+    background-color: rgba(76, 175, 80, 0.2);
+    color: #4CAF50;
+    padding: 5px 10px;
+    border-radius: 50px;
+    font-size: 0.8rem;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.team-info-item {
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+}
+
+.team-info-label {
+    color: #aaa;
+    margin-right: 8px;
+    min-width: 90px;
+}
+
+.team-info-value {
+    color: white;
+}
+
+.no-teams, .bracket-placeholder {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px;
+    text-align: center;
+    background-color: rgba(0, 0, 0, 0.4);
+    border-radius: 8px;
+    gap: 15px;
+}
+
+.no-teams i, .bracket-placeholder i, .tournoi-detail-loading i {
+    font-size: 3rem;
+    color: #666;
+    margin-bottom: 10px;
+}
+
+.registration-info, .register-section {
+    margin-top: 30px;
+    text-align: center;
+    padding: 20px;
+    background-color: rgba(0, 0, 0, 0.4);
+    border-radius: 8px;
+}
+
+.registration-status {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.registration-status i {
+    color: #4CAF50;
+    font-size: 1.5rem;
+}
+
+.btn-unregister-tournoi {
+    background-color: #f44336;
+    color: white;
+    border: none;
+    padding: 12px 25px;
+    border-radius: 5px;
+    font-size: 1rem;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.3s ease;
+}
+
+.btn-unregister-tournoi:hover {
+    background-color: #d32f2f;
+    transform: translateY(-2px);
+}
+
+.btn-register-now {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 12px 25px;
+    border-radius: 5px;
+    font-size: 1rem;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.3s ease;
+}
+
+.btn-register-now:hover {
+    background-color: #45a049;
+    transform: translateY(-2px);
+}
+
+.tournoi-detail-loading, .tournoi-detail-error {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 70vh;
+    text-align: center;
+}
+
+.tournoi-detail-error h2 {
+    color: #f44336;
+    margin-bottom: 10px;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .tournoi-detail-info {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+    
+    .teams-grid {
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    }
+    
+    .tournoi-detail-header h1 {
+        font-size: 1.8rem;
+    }
+    
+    .info-item {
+        flex-direction: column;
+    }
+    
+    .info-label {
+        margin-bottom: 5px;
+    }
+    
+    .team-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+}
+
+
+
+
+.tournoi-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.admin-actions {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.no-teams-sub {
+    color: #4CAF50;
+    font-style: italic;
+    margin-top: 10px;
+    font-size: 0.9rem;
+}
+
+.tournament-full {
+    color: #f44336;
+    background-color: rgba(244, 67, 54, 0.1);
+    padding: 15px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    font-weight: 500;
+    border: 1px solid rgba(244, 67, 54, 0.2);
+}
+
+.tournament-full i {
+    font-size: 1.2rem;
+    color: #f44336;
+}
+
+.team-info-badge {
+    background-color: #4CAF50;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 500;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.tournament-info-summary {
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    padding: 15px;
+    margin: 20px 0;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.tournament-info-summary p {
+    margin: 8px 0;
+    color: #fff;
+    font-size: 0.95rem;
+}
+
+.tournament-info-summary strong {
+    color: #4CAF50;
+    margin-right: 5px;
+}
+
+/* Styles pour l'avertissement d'inscription déjà existante */
+.already-registered {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 20px;
+    margin: 10px 0;
+}
+
+.already-registered i {
+    font-size: 3rem;
+    color: #f44336;
+    margin-bottom: 15px;
+}
+
+.already-registered p {
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin-bottom: 20px;
+    color: #f44336;
+}
+
+.already-registered {
+    background-color: rgba(255, 193, 7, 0.1);
+    border: 1px solid #ffc107;
+    border-radius: 8px;
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.already-registered i {
+    color: #ffc107;
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+.already-registered p {
+    color: #ffc107;
+    font-weight: 500;
+    margin-bottom: 15px;
+}
+
+.registration-info {
+    background-color: rgba(76, 175, 80, 0.1);
+    border: 1px solid #4CAF50;
+    border-radius: 8px;
+    padding: 20px;
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.registration-status {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.registration-status i {
+    color: #4CAF50;
+    font-size: 30px;
+    margin-bottom: 10px;
+}
+
+.registration-status p {
+    color: #4CAF50;
+    font-weight: 600;
+    font-size: 18px;
+}
+
+.btn-unregister-tournoi {
+    background: linear-gradient(45deg, #f44336, #d32f2f);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 50px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0px 3px 8px rgba(0, 0, 0, 0.2);
+    min-width: 200px;
+}
+
+.btn-unregister-tournoi:hover {
+    background: linear-gradient(45deg, #d32f2f, #f44336);
+    transform: translateY(-2px);
+    box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.3);
+}
+
+.btn-unregister-tournoi i {
+    margin-right: 8px;
+}
+
+@media (max-width: 768px) {
+    .btn-unregister-tournoi {
+        min-width: 180px;
+        font-size: 14px;
+        padding: 8px 16px;
+    }
+    
+    .registration-status p {
+        font-size: 16px;
+    }
+}
+
+.btn-reset-teams {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 16px;
+    background: linear-gradient(45deg, #f44336, #d32f2f);
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    text-transform: uppercase;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease;
+    margin-left: 10px;
+}
+
+.btn-reset-teams:hover {
+    background: linear-gradient(45deg, #d32f2f, #f44336);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.btn-reset-teams i {
+    margin-right: 8px;
+    font-size: 16px;
+}
+
+@media (max-width: 768px) {
+    .btn-reset-teams {
+        font-size: 12px;
+        padding: 8px 12px;
+        margin-top: 10px;
+        margin-left: 0;
+        width: 100%;
+    }
+    
+    .tournoi-header {
+        flex-direction: column;
+    }
+}
+
+.btn-reset-tournoi {
+    display: flex;
+    align-items: center;
+    padding: 8px 16px;
+    background: linear-gradient(45deg, #FF9800, #F57C00);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease;
+    margin-top: 5px;
+    width: 100%;
+}
+
+.btn-reset-tournoi:hover {
+    background: linear-gradient(45deg, #F57C00, #FF9800);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.btn-reset-tournoi i {
+    margin-right: 8px;
+    font-size: 16px;
+}
+
+@media (max-width: 768px) {
+    .btn-reset-tournoi {
+        font-size: 12px;
+        padding: 8px 12px;
+    }
+}
+
+.tournoi-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+    margin-top: 20px;
+}
+
+.btn-quick-reset {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 16px;
+    background: linear-gradient(45deg, #9C27B0, #673AB7);
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    text-transform: uppercase;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease;
+}
+
+.btn-quick-reset:hover {
+    background: linear-gradient(45deg, #673AB7, #9C27B0);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.btn-quick-reset i {
+    margin-right: 8px;
+    font-size: 16px;
+}
+
+.tournoi-actions-header {
+    display: flex;
+    gap: 10px;
+}
+
+@media (max-width: 768px) {
+    .btn-quick-reset {
+        font-size: 12px;
+        padding: 8px 12px;
+    }
+    
+    .tournoi-actions-header {
+        flex-direction: column;
+    width: 100%;
+    }
+}
+
+.btn-view-details.full-width {
+    width: 100%;
+    margin-bottom: 10px;
+    justify-content: center;
+}
+
+/* Styles pour les boutons d'action de tournoi */
+.admin-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.btn-modifier {
+    background: linear-gradient(45deg, #4CAF50, #45a049);
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.btn-modifier:hover {
+    background: linear-gradient(45deg, #45a049, #4CAF50);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.btn-supprimer {
+    background: linear-gradient(45deg, #f44336, #d32f2f);
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.btn-supprimer:hover {
+    background: linear-gradient(45deg, #d32f2f, #f44336);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.btn-details {
+    background: linear-gradient(45deg, #2196F3, #1976D2);
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.btn-details:hover {
+    background: linear-gradient(45deg, #1976D2, #2196F3);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+@media (max-width: 768px) {
+    .admin-actions {
+        flex-direction: column;
+    }
+    
+    .btn-modifier, .btn-supprimer, .btn-details {
+        width: 100%;
+        padding: 8px 12px;
+        font-size: 0.85rem;
+    }
+}
+
+/* Style pour le message "Connectez-vous" */
+.login-required {
+    background-color: rgba(255, 255, 255, 0.1);
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+.login-required p {
+    margin: 0;
+    color: #ccc;
+    font-size: 0.9rem;
+}
+
+/* Styles pour la page Contact */
+.contact-container {
+    max-width: 1200px;
+    margin: 50px auto;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+    background-color: rgba(0, 0, 0, 0.7);
+    border-radius: 15px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+}
+
+.contact-info {
+    text-align: center;
+}
+
+.contact-info h1 {
+    color: #fff;
+    font-size: 2.5rem;
+    margin-bottom: 30px;
+    position: relative;
+    display: inline-block;
+    padding-bottom: 10px;
+}
+
+.contact-info h1::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100px;
+    height: 3px;
+    background: linear-gradient(45deg, #4CAF50, #45a049);
+    border-radius: 3px;
+}
+
+.info-section {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 30px;
+    margin-top: 40px;
+}
+
+.info-item {
+    padding: 30px 20px;
+    background: linear-gradient(135deg, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.3));
+    border-radius: 10px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border: 1px solid rgba(76, 175, 80, 0.1);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.info-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(76, 175, 80, 0.2);
+    border-color: rgba(76, 175, 80, 0.3);
+}
+
+.info-item i {
+    font-size: 2.5rem;
+    color: #4CAF50;
+    margin-bottom: 20px;
+    transition: transform 0.3s ease;
+}
+
+.info-item:hover i {
+    transform: scale(1.1);
+}
+
+.info-item h3 {
+    color: #fff;
+    margin-bottom: 15px;
+    font-size: 1.4rem;
+}
+
+.info-item p {
+    color: #ddd;
+    margin: 5px 0;
+    font-size: 1.1rem;
+}
+
+.contact-form {
+    background: linear-gradient(135deg, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.3));
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(76, 175, 80, 0.1);
+}
+
+.contact-form h2 {
+    color: #fff;
+    text-align: center;
+    margin-bottom: 30px;
+    font-size: 2rem;
+    position: relative;
+    display: inline-block;
+    padding-bottom: 10px;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+}
+
+.contact-form h2::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px;
+    height: 3px;
+    background: linear-gradient(45deg, #4CAF50, #45a049);
+    border-radius: 3px;
+}
+
+.contact-form .form-group {
+    margin-bottom: 25px;
+}
+
+.contact-form .form-group label {
+    display: block;
+    color: #fff;
+    margin-bottom: 10px;
+    font-size: 1.1rem;
+    font-weight: 500;
+}
+
+.contact-form .form-group input,
+.contact-form .form-group textarea {
+    width: 90%;
+    padding: 15px;
+    border: 1px solid rgba(76, 175, 80, 0.3);
+    border-radius: 8px;
+    background-color: rgba(0, 0, 0, 0.5);
+    color: #fff;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+}
+
+.contact-form .form-group input:focus,
+.contact-form .form-group textarea:focus {
+    outline: none;
+    border-color: #4CAF50;
+    background-color: rgba(255, 255, 255, 0.1);
+    box-shadow: 0 0 10px rgba(76, 175, 80, 0.2);
+}
+
+.contact-form .form-group textarea {
+    resize: vertical;
+    min-height: 150px;
+}
+
+.submit-btn {
+    width: 95%;
+    padding: 15px;
+    background: linear-gradient(45deg, #4CAF50, #45a049);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    box-shadow: 0 4px 15px rgba(76, 175, 80, 0.3);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.submit-btn:hover {
+    background: linear-gradient(45deg, #45a049, #4CAF50);
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(76, 175, 80, 0.4);
+}
+
+.submit-btn:active {
+    transform: translateY(-1px);
+    box-shadow: 0 3px 10px rgba(76, 175, 80, 0.3);
+}
+
+.submit-btn i {
+    font-size: 1.2rem;
+    transition: transform 0.3s ease;
+}
+
+.submit-btn:hover i {
+    transform: translateX(5px);
+}
+
+/* Amélioration des styles pour la boîte de confirmation */
+.confirmation-message {
+    background: linear-gradient(45deg, rgba(76, 175, 80, 0.8), rgba(69, 160, 73, 0.8));
+    color: white;
+    padding: 15px 20px;
+    border-radius: 8px;
+    text-align: center;
+    margin-bottom: 25px;
+    font-size: 1.1rem;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    box-shadow: 0 4px 15px rgba(76, 175, 80, 0.3);
+    animation: slideDown 0.5s ease forwards;
+}
+
+.confirmation-message::before {
+    content: '\f00c';
+    font-family: 'Font Awesome 5 Free';
+    font-weight: 900;
+    font-size: 1.2rem;
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .contact-container {
+        padding: 15px;
+        margin: 30px 15px;
+    }
+    
+    .info-section {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+    
+    .contact-form {
+        padding: 25px;
+    }
+    
+    .contact-info h1 {
+        font-size: 2rem;
+    }
+    
+    .contact-form h2 {
+        font-size: 1.7rem;
+    }
+    
+    .info-item {
+        padding: 25px 15px;
+    }
+    
+    .info-item i {
+        font-size: 2rem;
+    }
+    
+    .contact-form .form-group input,
+    .contact-form .form-group textarea {
+        padding: 12px;
+    }
+    
+    .submit-btn {
+        padding: 12px;
+        font-size: 1rem;
+    }
+}
+
+/* Styles pour l'interface admin des messages */
+.admin-messages {
+    width: 90%;
+    max-width: 1200px;
+    margin: 3rem auto;
+    padding: 2rem;
+    background-color: rgba(0, 0, 0, 0.8);
+    border-radius: 15px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+    color: #fff;
+}
+
+.admin-messages h1 {
+    color: #fff;
+    font-size: 2.5rem;
+    margin-bottom: 2rem;
+    text-align: center;
+    font-weight: 700;
+    position: relative;
+    display: inline-block;
+    padding-bottom: 10px;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+}
+
+.admin-messages h1::after {
+    content: '';
+    width: 80px;
+    height: 4px;
+    background: linear-gradient(45deg, #4CAF50, #45a049);
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    border-radius: 2px;
+}
+
+.no-messages {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 3rem;
+    background-color: rgba(0, 0, 0, 0.5);
+    border-radius: 8px;
+    text-align: center;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.no-messages i {
+    font-size: 4rem;
+    color: #4CAF50;
+    margin-bottom: 1.5rem;
+    opacity: 0.7;
+}
+
+.no-messages p {
+    font-size: 1.2rem;
+    color: #fff;
+    opacity: 0.7;
+}
+
+.messages-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.message-card {
+    background-color: rgba(0, 0, 0, 0.6);
+    border-radius: 8px;
+    padding: 1.5rem;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    border-left: 4px solid #555;
+    transition: all 0.3s ease;
+    color: #fff;
+}
+
+.message-card.unread {
+    border-left: 4px solid #4CAF50;
+    background-color: rgba(76, 175, 80, 0.1);
+}
+
+.message-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+}
+
+.message-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 1rem;
+    padding-bottom: 0.8rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.message-header h3 {
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: #fff;
+    margin: 0;
+}
+
+.message-meta {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+}
+
+.message-date {
+    font-size: 0.85rem;
+    color: #ccc;
+}
+
+.new-badge {
+    background: linear-gradient(45deg, #4CAF50, #45a049);
+    color: white;
+    padding: 0.2rem 0.6rem;
+    border-radius: 100px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.sender-info {
+    margin-bottom: 1rem;
+    font-size: 0.95rem;
+    color: #ddd;
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+}
+
+.message-content {
+    background-color: rgba(0, 0, 0, 0.4);
+    padding: 1rem;
+    border-radius: 6px;
+    margin-bottom: 1rem;
+    font-size: 1rem;
+    line-height: 1.6;
+    color: #fff;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    white-space: pre-line;
+}
+
+.message-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.8rem;
+}
+
+.action-btn {
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    border: none;
+    font-size: 0.9rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: all 0.3s ease;
+    font-weight: 500;
+}
+
+.read-btn {
+    background: linear-gradient(45deg, #4CAF50, #45a049);
+    color: white;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.read-btn:hover {
+    background: linear-gradient(45deg, #45a049, #4CAF50);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.delete-btn {
+    background: linear-gradient(45deg, #f44336, #d32f2f);
+    color: white;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.delete-btn:hover {
+    background: linear-gradient(45deg, #d32f2f, #f44336);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+/* Style pour la version mobile */
+@media (max-width: 768px) {
+    .admin-messages {
+        padding: 1.5rem;
+        margin: 2rem auto;
+        width: 95%;
+    }
+
+    .admin-messages h1 {
+        font-size: 2rem;
+    }
+
+    .message-header {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .message-meta {
+        width: 100%;
+        justify-content: space-between;
+    }
+
+    .message-actions {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .action-btn {
+        width: 100%;
+        justify-content: center;
+    }
+}
+
+/* ... existing code ... */
+
+/* Styles pour la page de connexion */
+.login-wrapper {
+    min-height: 90vh;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding-top: 80px;
+    position: relative;
+    z-index: 2;
+    background: linear-gradient(135deg, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.9));
+}
+
+.login-container {
+    background: rgba(18, 18, 18, 0.95);
+    padding: 35px;
+    border-radius: 20px;
+    width: 100%;
+    max-width: 420px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    animation: fadeInUp 0.6s ease-out;
+    margin-top: -30px;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.login-container h2 {
+    color: #fff;
+    text-align: center;
+    margin-bottom: 35px;
+    font-size: 2.2rem;
+    font-weight: 600;
+    position: relative;
+    padding-bottom: 15px;
+    letter-spacing: 1px;
+}
+
+.login-container h2::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px;
+    height: 4px;
+    background: linear-gradient(45deg, #4CAF50, #45a049);
+    border-radius: 4px;
+}
+
+.login-container form {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.login-container form > div {
+    position: relative;
+}
+
+.login-container label {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: #fff;
+    margin-bottom: 10px;
+    font-size: 1rem;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+}
+
+.login-container label i {
+    color: #4CAF50;
+    font-size: 1.2rem;
+    transition: transform 0.3s ease;
+}
+
+.login-container div:focus-within label i {
+    transform: scale(1.1);
+}
+
+.login-container input {
+    width: 100%;
+    padding: 15px 20px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    color: #fff;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    letter-spacing: 0.5px;
+}
+
+.login-container input:focus {
+    outline: none;
+    border-color: #4CAF50;
+    background: rgba(255, 255, 255, 0.08);
+    box-shadow: 0 0 0 4px rgba(76, 175, 80, 0.1);
+}
+
+.login-container input::placeholder {
+    color: rgba(255, 255, 255, 0.4);
+    font-size: 0.95rem;
+}
+
+.login-container button[type="submit"] {
+    background: linear-gradient(45deg, #4CAF50, #45a049);
+    color: white;
+    padding: 16px 24px;
+    border: none;
+    border-radius: 12px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    margin-top: 15px;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+}
+
+.login-container button[type="submit"]:hover {
+    background: linear-gradient(45deg, #45a049, #4CAF50);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(76, 175, 80, 0.3);
+}
+
+.login-container button[type="submit"]:active {
+    transform: translateY(0);
+    box-shadow: 0 4px 12px rgba(76, 175, 80, 0.2);
+}
+
+.login-container button[type="submit"] i {
+    font-size: 1.2rem;
+    transition: transform 0.3s ease;
+}
+
+.login-container button[type="submit"]:hover i {
+    transform: translateX(4px);
+}
+
+.auth-switch {
+    margin-top: 25px;
+    text-align: center;
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 0.95rem;
+}
+
+.auth-link {
+    color: #4CAF50;
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    margin-left: 6px;
+    font-weight: 500;
+    position: relative;
+}
+
+.auth-link::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: #4CAF50;
+    transform: scaleX(0);
+    transition: transform 0.3s ease;
+}
+
+.auth-link:hover {
+    color: #45a049;
+}
+
+.auth-link:hover::after {
+    transform: scaleX(1);
+}
+
+.error {
+    background: rgba(244, 67, 54, 0.1);
+    color: #ff5252;
+    padding: 14px;
+    border-radius: 12px;
+    margin-bottom: 20px;
+    font-size: 0.95rem;
+    border: 2px solid rgba(244, 67, 54, 0.2);
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.error::before {
+    content: '\f071';
+    font-family: 'Font Awesome 5 Free';
+    font-weight: 900;
+}
+
+.success-message {
+    background: rgba(76, 175, 80, 0.1);
+    color: #69f0ae;
+    padding: 14px;
+    border-radius: 12px;
+    margin-bottom: 20px;
+    font-size: 0.95rem;
+    border: 2px solid rgba(76, 175, 80, 0.2);
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.success-message::before {
+    content: '\f00c';
+    font-family: 'Font Awesome 5 Free';
+    font-weight: 900;
+}
+
+.reset-button {
+    background: rgba(255, 255, 255, 0.05);
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    padding: 10px 20px;
+    border-radius: 12px;
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 25px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.reset-button:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.2);
+    color: rgba(255, 255, 255, 0.9);
+    transform: translateY(-1px);
+}
+
+.reset-button::before {
+    content: '\f021';
+    font-family: 'Font Awesome 5 Free';
+    font-weight: 900;
+}
+
+/* Responsive design pour le login */
+@media (max-width: 480px) {
+    .login-container {
+        padding: 30px 20px;
+        margin: 15px;
+    }
+
+    .login-container h2 {
+        font-size: 2rem;
+        margin-bottom: 25px;
+    }
+
+    .login-container input {
+        padding: 12px 16px;
+        font-size: 0.95rem;
+    }
+
+    .login-container button[type="submit"] {
+        padding: 14px 20px;
+        font-size: 1rem;
+    }
+
+    .auth-switch {
+        font-size: 0.9rem;
+    }
+}
+.Retour {
+    background-image: linear-gradient(45deg, #18bce9, #03b3ff);  /* Vert dégradé */
+    color: #fff;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    font-size: 15px;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
+    background-size: 200% auto;
+    transition: all 0.3s ease;
+    margin-bottom: 20px;
+}
+
+.Retour:hover {
+    background-position: right center;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+}
+
+.Retour:active {
+    transform: scale(0.98);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.Retour i {
+    font-size: 16px;
+}
+
+/* ... rest of existing code ... */
+
+/* Ajustement pour le mode responsive */
+@media (max-width: 768px) {
+    h1 {
+        margin-top: 200px;  /* Marge plus grande en mode mobile à cause de la navbar empilée */
+        font-size: 1.8rem;
+        padding: 15px 0;
+    }
+
+    .navbar {
+        padding-bottom: 10px;
+    }
+
+    .container {
+        padding-top: 20px;
+    }
+}
+
+/* Ajustement pour les très petits écrans */
+@media (max-width: 480px) {
+    h1 {
+        margin-top: 220px;
+        font-size: 1.6rem;
+    }
+}

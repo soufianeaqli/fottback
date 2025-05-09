@@ -1,0 +1,11 @@
+2025-05-08 16:29:17 - Attempting to delete terrain ID: 1
+2025-05-08 16:29:17 - Deleted terrain ID: 1
+2025-05-08 16:51:23 - Attempting to delete terrain ID: 5
+2025-05-08 16:51:24 - Deleted terrain ID: 5
+2025-05-08 16:51:24 - Deleted image: /storage/images/1746714590_78877c2ea8.jpg
+2025-05-08 18:04:36 - Attempting to delete terrain ID: 7
+2025-05-08 18:04:36 - Deleted terrain ID: 7
+2025-05-08 18:04:37 - Deleted image: /storage/images/1746716460_90b918d7f2.jpg
+2025-05-09 00:07:24 - Attempting to delete terrain ID: 8
+2025-05-09 00:07:24 - Deleted terrain ID: 8
+2025-05-09 00:07:24 - Deleted image: /storage/images/1746742024_eef089de6b.jpg

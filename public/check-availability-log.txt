@@ -1,0 +1,6 @@
+2025-05-08 16:59:27 - Checking availability for terrain ID: 6, date: 2025-05-16, time slot: 19:00-20:00
+2025-05-08 16:59:27 - Créneau disponible
+2025-05-08 16:59:45 - Checking availability for terrain ID: 6, date: 2025-05-16, time slot: 21:00-22:00
+2025-05-08 16:59:45 - Créneau disponible
+2025-05-08 17:02:28 - Checking availability for terrain ID: 6, date: 2025-05-16, time slot: 17:00-18:00
+2025-05-08 17:02:28 - Créneau disponible
