@@ -1,0 +1,246 @@
+/* Styling for the login prompt container */
+.login-prompt-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 20px;
+  background: rgba(0, 0, 0, 0.6);
+}
+
+.login-prompt {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(145deg, rgba(25, 25, 25, 0.9), rgba(40, 40, 40, 0.95));
+  border-radius: 15px;
+  padding: 40px;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  max-width: 500px;
+  width: 90%;
+  text-align: center;
+  animation: fadeInUp 0.5s ease-out forwards;
+  position: relative;
+  overflow: hidden;
+}
+
+.login-prompt::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 5px;
+  background: linear-gradient(90deg, #4CAF50, #2196F3, #4CAF50);
+  background-size: 200% 100%;
+  animation: gradientMove 3s linear infinite;
+}
+
+.login-prompt-title {
+  color: white;
+  font-size: 2rem;
+  margin: 0 0 20px 0;
+  font-weight: 700;
+  font-family: 'Montserrat', sans-serif;
+  position: relative;
+  padding-bottom: 12px;
+}
+
+.login-prompt-title::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80px;
+  height: 3px;
+  background: linear-gradient(90deg, #4CAF50, #2196F3);
+  border-radius: 3px;
+}
+
+@keyframes gradientMove {
+  0% {
+    background-position: 0% 0%;
+  }
+  100% {
+    background-position: 200% 0%;
+  }
+}
+
+.login-prompt p {
+  font-size: 1.4rem;
+  color: white;
+  margin-bottom: 30px;
+  font-weight: 500;
+  line-height: 1.4;
+  font-family: 'Montserrat', sans-serif;
+  position: relative;
+  padding-left: 25px;
+}
+
+.login-prompt p::before {
+  content: '\f05a';
+  font-family: "Font Awesome 5 Free";
+  font-weight: 900;
+  position: absolute;
+  left: 0;
+  color: #FFC107;
+  font-size: 1.3rem;
+}
+
+.login-prompt-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  width: 100%;
+  max-width: 300px;
+}
+
+.btn-login {
+  padding: 14px 35px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  background: #2ecc71;
+  color: white;
+  border: none;
+  border-radius: 30px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(46, 204, 113, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  font-family: 'Montserrat', sans-serif;
+  animation: greenPulse 2s infinite;
+}
+
+@keyframes greenPulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(46, 204, 113, 0.7);
+  }
+  70% {
+    box-shadow: 0 0 0 10px rgba(46, 204, 113, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(46, 204, 113, 0);
+  }
+}
+
+.btn-login i {
+  font-size: 1.2rem;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.btn-login:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px rgba(46, 204, 113, 0.7);
+  background: #27ae60;
+  animation: none;
+}
+
+.btn-login:active {
+  transform: translateY(-1px);
+  box-shadow: 0 3px 10px rgba(76, 175, 80, 0.5);
+}
+
+.btn-back {
+  padding: 12px 30px;
+  font-size: 1rem;
+  font-weight: 500;
+  background: transparent;
+  color: white;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  border-radius: 30px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  font-family: 'Montserrat', sans-serif;
+}
+
+.btn-back::before {
+  content: '\f060';
+  font-family: "Font Awesome 5 Free";
+  font-weight: 900;
+  font-size: 1rem;
+}
+
+.btn-back:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.3);
+  transform: translateY(-2px);
+}
+
+.btn-back:active {
+  transform: translateY(-1px);
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .login-prompt {
+    padding: 30px;
+  }
+  
+  .login-prompt-title {
+    font-size: 1.8rem;
+  }
+  
+  .login-prompt p {
+    font-size: 1.2rem;
+  }
+  
+  .btn-login {
+    padding: 12px 30px;
+    font-size: 1rem;
+  }
+  
+  .btn-back {
+    padding: 10px 25px;
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .login-prompt {
+    padding: 25px;
+  }
+  
+  .login-prompt-title {
+    font-size: 1.6rem;
+  }
+  
+  .login-prompt p {
+    font-size: 1.1rem;
+    padding-left: 22px;
+  }
+  
+  .login-prompt p::before {
+    font-size: 1.1rem;
+  }
+  
+  .btn-login {
+    padding: 10px 25px;
+    font-size: 0.95rem;
+  }
+  
+  .btn-back {
+    padding: 8px 20px;
+    font-size: 0.85rem;
+  }
+} 

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import LoginPrompt from './LoginPrompt';
 import * as reservationService from '../services/reservationService';
+import './terrain.css';
 
 function TerrainDetail({ addReservation, reservations, user, terrains }) {
     const { id } = useParams();
@@ -21,15 +22,7 @@ function TerrainDetail({ addReservation, reservations, user, terrains }) {
         return saved ? JSON.parse(saved) : [];
     });
 
-    // Chargement du terrain depuis les props
-    useEffect(() => {
-        const foundTerrain = terrains.find(t => t.id === parseInt(id));
-        if (foundTerrain) {
-            setTerrain(foundTerrain);
-        }
-    }, [id, terrains]);
-
-    // Chargement du terrain directement depuis l'API
+    // Chargement du terrain depuis l'API
     useEffect(() => {
         const fetchTerrainById = async () => {
             try {
@@ -54,24 +47,18 @@ function TerrainDetail({ addReservation, reservations, user, terrains }) {
             }
         };
 
-        fetchTerrainById();
-    }, [id]);
+        // Essayer d'abord de trouver le terrain dans les props
+        const foundTerrain = terrains.find(t => t.id === parseInt(id));
+        if (foundTerrain) {
+            setTerrain(foundTerrain);
+        } else {
+            fetchTerrainById();
+        }
+    }, [id, terrains]);
 
     useEffect(() => {
         localStorage.setItem('terrainDetailReservations', JSON.stringify(savedReservations));
     }, [savedReservations]);
-
-    if (!terrain) {
-        return (
-            <div className="terrain-not-found">
-                <h2>Terrain non trouvé</h2>
-                <p>Le terrain que vous recherchez n'existe pas ou a été supprimé.</p>
-                <button className="btn-back" onClick={() => navigate('/terrain')}>
-                    <i className="fas fa-arrow-left"></i> Retour à la liste des terrains
-                </button>
-            </div>
-        );
-    }
 
     const handleReserveClick = () => {
         if (!user) {
@@ -194,6 +181,7 @@ function TerrainDetail({ addReservation, reservations, user, terrains }) {
         }
     };
 
+    // Variables pour le formulaire de réservation
     const today = new Date().toISOString().split('T')[0];
 
     const timeSlots = [
@@ -203,35 +191,72 @@ function TerrainDetail({ addReservation, reservations, user, terrains }) {
         "21:00-22:00"
     ];
 
-    const reservedSlots = reservations
+    const reservedSlots = terrain && reservations
         .filter(reservation => reservation.terrainId === terrain.id && reservation.date === formData.date)
-        .map(reservation => reservation.timeSlot);
+        .map(reservation => reservation.timeSlot) || [];
 
     // Fonction pour obtenir l'URL complète de l'image
     const getImageUrl = (imageUrl) => {
-        if (!imageUrl) return null;
-        if (imageUrl.startsWith('http')) return imageUrl;
-        return `http://127.0.0.1:8000${imageUrl}`;
+        if (!imageUrl) return '/placeholder.jpg';
+        
+        // Pour les chemins commençant par /storage, ajouter le domaine du serveur
+        if (imageUrl.startsWith('/storage')) {
+            return `http://127.0.0.1:8000${imageUrl}`;
+        }
+        
+        return imageUrl;
     };
 
+    // S'il n'y a pas de terrain, afficher un message
+    if (!terrain) {
+        return (
+            <div className="terrain-not-found">
+                <h2>Terrain non trouvé</h2>
+                <p>Le terrain que vous recherchez n'existe pas ou a été supprimé.</p>
+                <button className="btn-back" onClick={() => navigate('/terrain')}>
+                    <i className="fas fa-arrow-left"></i> Retour à la liste des terrains
+                </button>
+            </div>
+        );
+    }
+
     return (
-        <div className="terrain-detail">
+        <div className="terrain-detail-page">
             {showLoginPrompt && <LoginPrompt />}
 
-            <div className="terrain-content">
-                <div className="terrain-image-container">
+            {/* En-tête du terrain avec titre et boutons d'action */}
+            <div className="terrain-detail-header">
+                <h1>{terrain.titre}</h1>
+                <div className="terrain-detail-actions">
+                    {user && user.role !== 'admin' && (
+                        <button className="btn-reserve" onClick={handleReserveClick}>
+                            <i className="fas fa-calendar-plus"></i> Réserver ce terrain
+                        </button>
+                    )}
+                    <button className="btn-back" onClick={() => navigate('/terrain')}>
+                        <i className="fas fa-arrow-left"></i> Retour
+                    </button>
+                </div>
+            </div>
+
+            {/* Contenu principal avec image et infos */}
+            <div className="terrain-detail-container">
+                <div className="terrain-detail-image-container">
                     <img
                         src={getImageUrl(terrain.image)}
                         alt={terrain.titre}
-                        className="terrain-image"
+                        className="terrain-detail-image"
                         onError={(e) => {
                             console.error('Erreur de chargement de l\'image:', terrain.image);
                             e.target.src = '/placeholder.jpg';
                         }}
                     />
+                    <div className="terrain-price-badge">
+                        <span>{terrain.prix} DH/heure</span>
+                    </div>
                 </div>
 
-                <div className="terrain-info">
+                <div className="terrain-detail-info">
                     <div className="terrain-description">
                         <h2>Description</h2>
                         <p>{terrain.description}</p>
@@ -263,37 +288,26 @@ function TerrainDetail({ addReservation, reservations, user, terrains }) {
                     </div>
                 </div>
             </div>
-            <div className="terrain-header">
-                <h1>{terrain.titre}</h1>
-                <div className="terrain-actions">
-                    {!user?.role === 'admin' && (
-                        <button className="btn-reserve" onClick={handleReserveClick}>
-                            <i className="fas fa-calendar-plus"></i> Réserver ce terrain
-                        </button>
-                    )}
-                    <button className="btn-back" onClick={() => navigate('/terrain')}>
-                        <i className="fas fa-arrow-left"></i> Retour
-                    </button>
-                </div>
-            </div>
+            
+            {/* Modal de réservation */}
             {isReservationModalOpen && (
                 <div className="modal">
                     <div className="modal-content">
                         <h2>Réserver {terrain.titre}</h2>
                         <form onSubmit={handleSubmit}>
-                            <div>
+                            <div className="form-group">
                                 <label>Nom:</label>
                                 <input type="text" name="name" value={formData.name} onChange={handleChange} required />
                             </div>
-                            <div>
+                            <div className="form-group">
                                 <label>Email:</label>
                                 <input type="email" name="email" value={formData.email} onChange={handleChange} required />
                             </div>
-                            <div>
+                            <div className="form-group">
                                 <label>Date de Réservation:</label>
                                 <input type="date" name="date" min={today} value={formData.date} onChange={handleChange} required />
                             </div>
-                            <div>
+                            <div className="form-group">
                                 <label>Plage Horaire:</label>
                                 <select name="timeSlot" value={formData.timeSlot} onChange={handleChange} required>
                                     <option value="" disabled>Choisir une heure</option>

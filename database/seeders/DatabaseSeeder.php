@@ -21,7 +21,8 @@ class DatabaseSeeder extends Seeder
         ]);
 
         $this->call([
-            TerrainSeeder::class
+            TerrainSeeder::class,
+            TournamentsTableSeeder::class,
         ]);
     }
 }

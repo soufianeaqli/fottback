@@ -35,7 +35,7 @@ function Header({ user, logout }) {
     return (
         <nav className="navbar">
             <div className="logo">
-                <Link to="/">LWST</Link>
+                <Link to="/">GoalTime</Link>
             </div>
 
             <div className="nav-links">
@@ -98,9 +98,9 @@ function Header({ user, logout }) {
                         )}
                     </>
                 ) : (
-                    <Link to="/login">
+                    <Link to="/login" className="login-link">
                         <button className="login-button">
-                            <i className="fas fa-user"></i> Se connecter
+                            <i className="fas fa-lock-open"></i> Se connecter
                         </button>
                     </Link>
                 )}

@@ -1,14 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import * as userService from '../services/userService';
 import './parametres.css';
 
 function Parametres({ user, setUser }) {
     const navigate = useNavigate();
     const [activeTab, setActiveTab] = useState('profile');
     const [formData, setFormData] = useState({
-        username: user?.username || 'Utilisateur',
-        email: user?.email || 'utilisateur@example.com',
-        phone: user?.phone || '0612345678',
+        username: '',
+        name: '',
+        email: '',
+        phone: '',
         currentPassword: '',
         newPassword: '',
         confirmPassword: ''
@@ -21,6 +23,7 @@ function Parametres({ user, setUser }) {
     const [successMessage, setSuccessMessage] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
     const [isLoading, setIsLoading] = useState(true);
+    const [isSubmitting, setIsSubmitting] = useState(false);
 
     useEffect(() => {
         // Simuler un chargement
@@ -34,6 +37,27 @@ function Parametres({ user, setUser }) {
 
         return () => clearTimeout(timer);
     }, [user, navigate]);
+
+    // Mettre à jour les données du formulaire quand l'utilisateur change
+    useEffect(() => {
+        if (user) {
+            setFormData({
+                username: user.username || '',
+                name: user.name || '',
+                email: user.email || '',
+                phone: user.phone || '',
+                currentPassword: '',
+                newPassword: '',
+                confirmPassword: ''
+            });
+            console.log('Données utilisateur chargées:', { 
+                username: user.username, 
+                name: user.name, 
+                email: user.email, 
+                phone: user.phone 
+            });
+        }
+    }, [user]);
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -62,12 +86,18 @@ function Parametres({ user, setUser }) {
         return /^[0-9]{10}$/.test(phone);
     };
 
-    const handleProfileUpdate = (e) => {
+    const handleProfileUpdate = async (e) => {
         e.preventDefault();
+        setErrorMessage('');
+        setSuccessMessage('');
         
         // Validation
         if (!formData.username.trim()) {
             setErrorMessage("Le nom d'utilisateur est requis");
+            return;
+        }
+        if (!formData.name.trim()) {
+            setErrorMessage("Le nom complet est requis");
             return;
         }
         if (!validateEmail(formData.email)) {
@@ -79,27 +109,58 @@ function Parametres({ user, setUser }) {
             return;
         }
 
-        // Simuler la mise à jour
-        setUser(prev => ({
-            ...prev,
-            username: formData.username,
-            email: formData.email,
-            phone: formData.phone
-        }));
-        setSuccessMessage('Profil mis à jour avec succès !');
-        setTimeout(() => setSuccessMessage(''), 3000);
+        setIsSubmitting(true);
+        
+        try {
+            // Appel au service de mise à jour du profil
+            const updatedUser = await userService.updateProfile({
+                id: user.id,
+                username: formData.username,
+                name: formData.name,
+                email: formData.email,
+                phone: formData.phone
+            });
+            
+            // Mise à jour du contexte utilisateur avec toutes les données
+            setUser(prev => ({
+                ...prev,
+                username: updatedUser.username,
+                name: updatedUser.name,
+                email: updatedUser.email,
+                phone: updatedUser.phone
+            }));
+            
+            // Mise à jour du localStorage pour conserver les changements
+            const storedUser = JSON.parse(localStorage.getItem('user') || '{}');
+            localStorage.setItem('user', JSON.stringify({
+                ...storedUser,
+                username: updatedUser.username,
+                name: updatedUser.name,
+                email: updatedUser.email,
+                phone: updatedUser.phone
+            }));
+            
+            setSuccessMessage('Profil mis à jour avec succès !');
+            setTimeout(() => setSuccessMessage(''), 3000);
+        } catch (error) {
+            setErrorMessage(error.message || 'Erreur lors de la mise à jour du profil');
+        } finally {
+            setIsSubmitting(false);
+        }
     };
 
-    const handlePasswordChange = (e) => {
+    const handlePasswordChange = async (e) => {
         e.preventDefault();
+        setErrorMessage('');
+        setSuccessMessage('');
 
         // Validation
         if (!formData.currentPassword) {
             setErrorMessage('Le mot de passe actuel est requis');
             return;
         }
-        if (formData.newPassword.length < 8) {
-            setErrorMessage('Le nouveau mot de passe doit contenir au moins 8 caractères');
+        if (formData.newPassword.length < 6) {
+            setErrorMessage('Le nouveau mot de passe doit contenir au moins 6 caractères');
             return;
         }
         if (formData.newPassword !== formData.confirmPassword) {
@@ -107,15 +168,29 @@ function Parametres({ user, setUser }) {
             return;
         }
 
-        // Simuler le changement de mot de passe
-        setSuccessMessage('Mot de passe modifié avec succès !');
-        setFormData(prev => ({
-            ...prev,
-            currentPassword: '',
-            newPassword: '',
-            confirmPassword: ''
-        }));
-        setTimeout(() => setSuccessMessage(''), 3000);
+        setIsSubmitting(true);
+        
+        try {
+            // Appel au service de mise à jour du mot de passe
+            await userService.updatePassword({
+                id: user.id,
+                current_password: formData.currentPassword,
+                new_password: formData.newPassword
+            });
+            
+            setSuccessMessage('Mot de passe modifié avec succès !');
+            setFormData(prev => ({
+                ...prev,
+                currentPassword: '',
+                newPassword: '',
+                confirmPassword: ''
+            }));
+            setTimeout(() => setSuccessMessage(''), 3000);
+        } catch (error) {
+            setErrorMessage(error.message || 'Erreur lors de la modification du mot de passe');
+        } finally {
+            setIsSubmitting(false);
+        }
     };
 
     if (isLoading) {
@@ -191,6 +266,22 @@ function Parametres({ user, setUser }) {
                                         onChange={handleInputChange}
                                         placeholder="Votre nom d'utilisateur"
                                         required
+                                        disabled={isSubmitting}
+                                    />
+                                </div>
+                                <div className="form-group">
+                                    <label>
+                                        <i className="fas fa-user"></i>
+                                        Nom complet
+                                    </label>
+                                    <input
+                                        type="text"
+                                        name="name"
+                                        value={formData.name}
+                                        onChange={handleInputChange}
+                                        placeholder="Votre nom complet"
+                                        required
+                                        disabled={isSubmitting}
                                     />
                                 </div>
                                 <div className="form-group">
@@ -205,6 +296,7 @@ function Parametres({ user, setUser }) {
                                         onChange={handleInputChange}
                                         placeholder="Votre email"
                                         required
+                                        disabled={isSubmitting}
                                     />
                                 </div>
                                 <div className="form-group">
@@ -219,11 +311,15 @@ function Parametres({ user, setUser }) {
                                         onChange={handleInputChange}
                                         placeholder="Votre numéro de téléphone"
                                         pattern="[0-9]{10}"
+                                        disabled={isSubmitting}
                                     />
                                 </div>
-                                <button type="submit" className="btn-save">
-                                    <i className="fas fa-save"></i>
-                                    Enregistrer les modifications
+                                <button type="submit" className="btn-save" disabled={isSubmitting}>
+                                    {isSubmitting ? (
+                                        <><i className="fas fa-spinner fa-spin"></i> Enregistrement...</>
+                                    ) : (
+                                        <><i className="fas fa-save"></i> Enregistrer les modifications</>
+                                    )}
                                 </button>
                             </form>
                         </div>
@@ -245,6 +341,7 @@ function Parametres({ user, setUser }) {
                                         onChange={handleInputChange}
                                         placeholder="Entrez votre mot de passe actuel"
                                         required
+                                        disabled={isSubmitting}
                                     />
                                 </div>
                                 <div className="form-group">
@@ -258,8 +355,9 @@ function Parametres({ user, setUser }) {
                                         value={formData.newPassword}
                                         onChange={handleInputChange}
                                         placeholder="Entrez votre nouveau mot de passe"
-                                        minLength="8"
+                                        minLength="6"
                                         required
+                                        disabled={isSubmitting}
                                     />
                                 </div>
                                 <div className="form-group">
@@ -273,13 +371,17 @@ function Parametres({ user, setUser }) {
                                         value={formData.confirmPassword}
                                         onChange={handleInputChange}
                                         placeholder="Confirmez votre nouveau mot de passe"
-                                        minLength="8"
+                                        minLength="6"
                                         required
+                                        disabled={isSubmitting}
                                     />
                                 </div>
-                                <button type="submit" className="btn-save">
-                                    <i className="fas fa-key"></i>
-                                    Changer le mot de passe
+                                <button type="submit" className="btn-save" disabled={isSubmitting}>
+                                    {isSubmitting ? (
+                                        <><i className="fas fa-spinner fa-spin"></i> Modification en cours...</>
+                                    ) : (
+                                        <><i className="fas fa-key"></i> Changer le mot de passe</>
+                                    )}
                                 </button>
                             </form>
                         </div>

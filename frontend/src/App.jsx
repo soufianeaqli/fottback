@@ -73,7 +73,29 @@ function App() {
   useEffect(() => {
     const storedUser = localStorage.getItem('user');
     if (storedUser) {
-      setUser(JSON.parse(storedUser));
+      try {
+        const parsedUser = JSON.parse(storedUser);
+        // Vérifier que toutes les données nécessaires sont présentes
+        if (parsedUser && parsedUser.id && parsedUser.username) {
+          setUser({
+            id: parsedUser.id,
+            username: parsedUser.username,
+            name: parsedUser.name || '',
+            email: parsedUser.email || '',
+            phone: parsedUser.phone || '',
+            role: parsedUser.role || 'user'
+          });
+          console.log('Utilisateur chargé depuis localStorage:', {
+            username: parsedUser.username,
+            name: parsedUser.name,
+            email: parsedUser.email,
+            phone: parsedUser.phone
+          });
+        }
+      } catch (error) {
+        console.error('Erreur lors du chargement des données utilisateur:', error);
+        localStorage.removeItem('user');
+      }
     }
   }, []);
 
@@ -144,8 +166,17 @@ function App() {
   };
 
   const handleLogin = (userData) => {
-    setUser(userData);
-    localStorage.setItem('user', JSON.stringify(userData));
+    // S'assurer que toutes les données utilisateur sont présentes
+    const completeUserData = {
+      id: userData.id,
+      username: userData.username,
+      name: userData.name,
+      email: userData.email,
+      phone: userData.phone,
+      role: userData.role
+    };
+    setUser(completeUserData);
+    localStorage.setItem('user', JSON.stringify(completeUserData));
   };
 
   const handleLogout = () => {
@@ -188,10 +219,10 @@ function App() {
               terrains={terrains}
             />
           } />
-          <Route path="reservation" element={user ? <Reservation user={user} reservations={reservations} deleteReservation={deleteReservation} modifyReservation={modifyReservation} acceptReservation={acceptReservation} /> : <Navigate to="/login" />} />
+          <Route path="reservation" element={<Reservation user={user} reservations={reservations} deleteReservation={deleteReservation} modifyReservation={modifyReservation} acceptReservation={acceptReservation} />} />
           <Route path="contact" element={<Contact user={user} />} />
           <Route path="tournoi" element={<Tournoi user={user} tournois={tournois} setTournois={setTournois} />} />
-          <Route path="tournoi/:id" element={<TournoiDetail user={user} tournois={tournois} setTournois={setTournois} />} />
+          <Route path="tournoi/:id" element={<TournoiDetail user={user} />} />
           <Route path="login" element={<Login setUser={handleLogin} />} />
           <Route path="parametres" element={user ? <Parametres user={user} setUser={setUser} /> : <Navigate to="/login" />} />
         </Routes>

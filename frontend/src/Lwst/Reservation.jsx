@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import LoginPrompt from './LoginPrompt';
 import * as reservationService from '../services/reservationService';
+import './reservations.css'; // Importer le nouveau fichier CSS
 
 function Reservation({ user }) {
     const [reservations, setReservations] = useState([]);
@@ -74,7 +75,72 @@ function Reservation({ user }) {
         }
     }, [user]);
 
-    // Si l'utilisateur n'est pas connecté, rediriger vers la page de connexion
+    // Après avoir chargé les réservations, essayer de récupérer les noms des terrains si nécessaire
+    useEffect(() => {
+        const enrichReservationsWithTerrainNames = async () => {
+            // Vérifier si on a besoin de récupérer des noms de terrains
+            const needsTerrainNames = reservations.some(res => 
+                (!res.terrainName && !res.terrain_name && res.terrain_id) || 
+                (!res.terrainName && !res.terrain_name && res.terrainId));
+            
+            if (!needsTerrainNames) return;
+            
+            try {
+                console.log('Enrichissement des réservations avec les noms de terrains');
+                // Faire une requête pour obtenir tous les terrains
+                const response = await fetch('http://127.0.0.1:8000/direct-get-terrains.php', {
+                    method: 'GET',
+                    headers: {
+                        'Accept': 'application/json'
+                    }
+                });
+                
+                if (!response.ok) {
+                    console.error('Échec de la récupération des terrains');
+                    return;
+                }
+                
+                const terrains = await response.json();
+                console.log('Terrains récupérés pour enrichissement:', terrains);
+                
+                // Créer une map des terrains par ID
+                const terrainsMap = {};
+                terrains.forEach(terrain => {
+                    terrainsMap[terrain.id] = terrain.titre;
+                });
+                
+                console.log('Map des terrains créée:', terrainsMap);
+                
+                // Mettre à jour les réservations avec les noms de terrains
+                const updatedReservations = reservations.map(res => {
+                    const terrainId = res.terrain_id || res.terrainId;
+                    console.log(`Traitement de la réservation ${res.id}, terrain_id: ${terrainId}`);
+                    
+                    if (terrainId && terrainsMap[terrainId]) {
+                        console.log(`Nom de terrain trouvé pour ${terrainId}: ${terrainsMap[terrainId]}`);
+                        return {
+                            ...res,
+                            terrainName: terrainsMap[terrainId],
+                            terrain_name: terrainsMap[terrainId] // Assurer la compatibilité entre les formats
+                        };
+                    }
+                    return res;
+                });
+                
+                console.log('Réservations enrichies:', updatedReservations);
+                setReservations(updatedReservations);
+                
+            } catch (error) {
+                console.error('Erreur lors de l\'enrichissement des réservations:', error);
+            }
+        };
+        
+        if (reservations.length > 0) {
+            enrichReservationsWithTerrainNames();
+        }
+    }, [reservations.length]);
+
+    // Si l'utilisateur n'est pas connecté, afficher le message d'authentification requise
     if (!user) {
         return <LoginPrompt />;
     }
@@ -294,6 +360,7 @@ function Reservation({ user }) {
                 <thead>
                     <tr>
                         <th>Nom</th>
+                        <th>Terrain</th>
                         <th>Date</th>
                         <th>Plage Horaire</th>
                         {user.role === 'admin' && <th>Utilisateur</th>}
@@ -306,7 +373,7 @@ function Reservation({ user }) {
                 <tbody>
                     {displayedReservations.length === 0 ? (
                         <tr>
-                            <td colSpan={user.role === 'admin' ? 7 : 4} className="no-reservations">
+                            <td colSpan={user.role === 'admin' ? 8 : 5} className="no-reservations">
                                 Aucune réservation disponible.
                             </td>
                         </tr>
@@ -320,6 +387,17 @@ function Reservation({ user }) {
                                         : 'pending'
                                 }>
                                     <td>{reservation.name}</td>
+                                    <td className="terrain-name">
+                                        {reservation.terrainName || reservation.terrain_name || 
+                                         (reservation.terrain && reservation.terrain.titre) || 
+                                         (reservation.terrain && reservation.terrain.name) ||
+                                         (reservation.terrainId && `Terrain #${reservation.terrainId}`) || 
+                                         (reservation.terrain_id && `Terrain #${reservation.terrain_id}`) || (
+                                            <span className="terrain-name-unknown">
+                                                <i className="fas fa-question-circle"></i> Inconnu
+                                            </span>
+                                        )}
+                                    </td>
                                     <td>{reservation.date}</td>
                                     <td>{reservation.timeSlot}</td>
                                     {user.role === 'admin' && <td>{reservation.userId || 'Non assigné'}</td>}
@@ -359,13 +437,20 @@ function Reservation({ user }) {
                                     )}
                                     <td className="actions">
                                         {user.role !== 'admin' && (
-                                            <button onClick={() => handleModifyClick(reservation)} className="btn-modify">
-                                                <i className="fas fa-edit"></i> Modifier
+                                            <div className="actions-container">
+                                                <button onClick={() => handleModifyClick(reservation)} className="btn-modifier">
+                                                    <i className="fas fa-edit"></i> Modifier
+                                                </button>
+                                                <button onClick={() => handleDeleteClick(reservation.id)} className="btn">
+                                                    <i className="fas fa-trash-alt"></i> Supprimer
+                                                </button>
+                                            </div>
+                                        )}
+                                        {user.role === 'admin' && (
+                                            <button onClick={() => handleDeleteClick(reservation.id)} className="btn">
+                                                <i className="fas fa-trash-alt"></i> Supprimer
                                             </button>
                                         )}
-                                        <button onClick={() => handleDeleteClick(reservation.id)} className="btn">
-                                            <i className="fas fa-trash-alt"></i> Supprimer
-                                        </button>
                                     </td>
                                     {user.role !== 'admin' && (
                                         <td className="payment-cell">
@@ -401,31 +486,62 @@ function Reservation({ user }) {
                                 <input type="text" name="name" value={formData.name} onChange={handleChange} required />
                             </div>
                             <div className="form-group">
+                                <label><i className="fas fa-futbol"></i> Terrain:</label>
+                                <input 
+                                    type="text" 
+                                    value={formData.terrainName || formData.terrain_name || 
+                                          (formData.terrain && formData.terrain.titre) || 
+                                          (formData.terrain && formData.terrain.name) ||
+                                          (formData.terrainId && `Terrain #${formData.terrainId}`) || 
+                                          (formData.terrain_id && `Terrain #${formData.terrain_id}`) || 
+                                          "Terrain non spécifié"} 
+                                    readOnly 
+                                    className="readonly-input"
+                                />
+                            </div>
+                            <div className="form-group">
                                 <label><i className="fas fa-calendar-alt"></i> Date de Réservation:</label>
                                 <input type="date" name="date" min={today} value={formData.date} onChange={handleChange} required />
                             </div>
                             <div className="form-group">
                                 <label><i className="fas fa-clock"></i> Plage Horaire:</label>
-                                <select name="timeSlot" value={formData.timeSlot || ''} onChange={handleChange} required>
-                                    <option value="" disabled>Choisir une heure</option>
-                                    {timeSlots.map(slot => {
-                                        const isReserved = reservations.some(
-                                            reservation =>
-                                                reservation.date === formData.date &&
-                                                reservation.timeSlot === slot &&
-                                                reservation.id !== formData.id
-                                        );
-                                        return (
-                                            <option
-                                                key={slot}
-                                                value={slot}
-                                                disabled={isReserved}
-                                            >
-                                                {isReserved ? `${slot} (Déjà réservé)` : slot}
-                                            </option>
-                                        );
-                                    })}
-                                </select>
+                                <div className="time-slot-container">
+                                    <select 
+                                        name="timeSlot" 
+                                        value={formData.timeSlot || ''} 
+                                        onChange={handleChange} 
+                                        required
+                                        className="time-slot-select"
+                                    >
+                                        <option value="" disabled>Choisir une heure</option>
+                                        {timeSlots.map(slot => {
+                                            const isReserved = reservations.some(
+                                                reservation =>
+                                                    reservation.date === formData.date &&
+                                                    reservation.timeSlot === slot &&
+                                                    reservation.id !== formData.id
+                                            );
+                                            return (
+                                                <option
+                                                    key={slot}
+                                                    value={slot}
+                                                    disabled={isReserved}
+                                                    className={isReserved ? 'reserved-slot' : ''}
+                                                >
+                                                    {slot} {isReserved ? '(Déjà réservé)' : ''}
+                                                </option>
+                                            );
+                                        })}
+                                    </select>
+                                    <div className="time-slot-legend">
+                                        <div className="legend-item">
+                                            <span className="legend-color available"></span> Disponible
+                                        </div>
+                                        <div className="legend-item">
+                                            <span className="legend-color reserved"></span> Déjà réservé
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                             {user.role === 'admin' && (
                                 <div className="form-group">

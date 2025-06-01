@@ -11,7 +11,7 @@ const API_BASE_URL = 'http://127.0.0.1:8000';
 export const getAllReservations = async () => {
   try {
     console.log('Chargement de toutes les réservations via script direct');
-    const response = await fetch(`${API_BASE_URL}/direct-get-reservations.php`, {
+    const response = await fetch(`${API_BASE_URL}/direct-get-reservations.php?include_terrain=true`, {
       method: 'GET',
       headers: {
         'Accept': 'application/json'
@@ -40,7 +40,7 @@ export const getAllReservations = async () => {
 export const getUserReservations = async (username) => {
   try {
     console.log(`Chargement des réservations pour l'utilisateur ${username} via script direct`);
-    const response = await fetch(`${API_BASE_URL}/direct-get-user-reservations.php?user_id=${username}`, {
+    const response = await fetch(`${API_BASE_URL}/direct-get-user-reservations.php?user_id=${username}&include_terrain=true`, {
       method: 'GET',
       headers: {
         'Accept': 'application/json'

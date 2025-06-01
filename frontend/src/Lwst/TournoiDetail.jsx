@@ -1,86 +1,61 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import LoginPrompt from './LoginPrompt';
+import * as tournamentService from '../services/tournamentService';
+import './tournoi.css';
 
-function TournoiDetail({ user, tournois, setTournois }) {
+function TournoiDetail({ user }) {
     const { id } = useParams();
     const navigate = useNavigate();
     const [tournoi, setTournoi] = useState(null);
     const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
     const [confirmationMessage, setConfirmationMessage] = useState('');
-    
-    useEffect(() => {
-        if (tournois && tournois.length > 0) {
-            const currentTournoi = tournois.find(t => t.id === parseInt(id) || t.id === id);
-            if (currentTournoi) {
-                setTournoi(currentTournoi);
-            }
-            setLoading(false);
-        }
-    }, [id, tournois]);
 
-    const handleUnregister = () => {
-        if (!tournoi || !tournoi.teams) return;
+    useEffect(() => {
+        const fetchTournament = async () => {
+            try {
+                setLoading(true);
+                const data = await tournamentService.getTournamentById(id);
+                setTournoi(data);
+                setLoading(false);
+            } catch (error) {
+                console.error('Error fetching tournament details:', error);
+                setError('Erreur lors du chargement des détails du tournoi');
+                setLoading(false);
+            }
+        };
+
+        fetchTournament();
+    }, [id]);
+
+    const handleUnregister = async () => {
+        if (!tournoi) return;
         
-        console.log('Désinscription initiée');
-        console.log('Utilisateur:', user);
-        console.log('Équipes du tournoi:', tournoi.teams);
+        console.log('Désinscription initiée dans TournoiDetail');
         
-        // Trouver l'équipe de l'utilisateur
-        const userTeam = tournoi.teams.find(team => 
-            user && (team.email === user.email || team.captain === user.username || (team.userId && team.userId === user.id))
-        );
-        
-        console.log('Équipe trouvée:', userTeam);
-        
-        if (!userTeam) {
-            console.log('Aucune équipe trouvée pour cet utilisateur');
-            setConfirmationMessage('Erreur: Votre équipe n\'a pas été trouvée.');
+        try {
+            // Utiliser la fonction mise à jour qui utilise l'ID utilisateur automatiquement
+            const updatedTournament = await tournamentService.unregisterTeam(tournoi.id);
+            
+            // Mettre à jour les données du tournoi local
+            setTournoi(updatedTournament);
+            
+            // Afficher message de confirmation
+            setConfirmationMessage('Vous avez été désinscrit du tournoi avec succès.');
+            
+            // Masquer le message après 5 secondes
             setTimeout(() => {
                 setConfirmationMessage('');
             }, 5000);
-            return;
+        } catch (error) {
+            console.error('Erreur lors de la désinscription:', error);
+            setError(error.message || 'Une erreur s\'est produite lors de la désinscription.');
+            
+            setTimeout(() => {
+                setError(null);
+            }, 5000);
         }
-        
-        // Filtrer pour enlever l'équipe
-        const updatedTeams = tournoi.teams.filter(team => team.id !== userTeam.id);
-        console.log('Équipes après filtrage:', updatedTeams);
-        
-        // Mettre à jour le tournoi
-        const updatedTournoi = {
-            ...tournoi,
-            teams: updatedTeams,
-            registered: false
-        };
-        
-        console.log('Tournoi mis à jour:', updatedTournoi);
-        
-        // Mettre à jour la liste des tournois
-        const updatedTournois = tournois.map(t => {
-            if (t.id === tournoi.id) {
-                return updatedTournoi;
-            }
-            return t;
-        });
-        
-        // Mettre à jour l'état global des tournois
-        setTournois(updatedTournois);
-        console.log('État global des tournois mis à jour');
-        
-        // Mettre à jour l'état local
-        setTournoi(updatedTournoi);
-        console.log('État local du tournoi mis à jour');
-        
-        setConfirmationMessage('Votre équipe a été désinscrite du tournoi avec succès.');
-        setTimeout(() => {
-            setConfirmationMessage('');
-        }, 5000);
-        
-        // Rediriger vers la liste des tournois après désinscription
-        setTimeout(() => {
-            console.log('Redirection vers la liste des tournois');
-            navigate('/tournoi');
-        }, 2000);
     };
 
     // Si l'utilisateur n'est pas connecté, afficher l'invite de connexion
@@ -97,6 +72,19 @@ function TournoiDetail({ user, tournois, setTournois }) {
             </div>
         );
     }
+
+    // Afficher un message d'erreur si la récupération a échoué
+    if (error) {
+        return (
+            <div className="tournoi-detail-error">
+                <h2>Erreur</h2>
+                <p>{error}</p>
+                <button onClick={() => navigate('/tournoi')} className="btn-back">
+                    <i className="fas fa-arrow-left"></i> Retour aux tournois
+                </button>
+            </div>
+        );
+    }
     
     // Si le tournoi n'existe pas, afficher un message d'erreur
     if (!tournoi) {
@@ -104,7 +92,7 @@ function TournoiDetail({ user, tournois, setTournois }) {
             <div className="tournoi-detail-error">
                 <h2>Tournoi introuvable</h2>
                 <p>Le tournoi demandé n'existe pas ou a été supprimé.</p>
-                <button onClick={() => navigate('/tournois')} className="btn-back">
+                <button onClick={() => navigate('/tournoi')} className="btn-back">
                     <i className="fas fa-arrow-left"></i> Retour aux tournois
                 </button>
             </div>
@@ -114,149 +102,138 @@ function TournoiDetail({ user, tournois, setTournois }) {
     // Récupérer les équipes inscrites au tournoi
     const teams = tournoi.teams || [];
     const teamsCount = teams.length;
-    const placesRestantes = tournoi.maxTeams - teamsCount;
+    const placesRestantes = tournoi.max_teams - teamsCount;
     
     // Vérifier si l'utilisateur est déjà inscrit
-    const isUserRegistered = tournoi.registered || (tournoi.teams && tournoi.teams.some(team => 
-        user && (team.email === user.email || team.captain === user.username || (team.userId && team.userId === user.id))
-    ));
+    const isUserRegistered = (() => {
+        if (!user || !teams || teams.length === 0) {
+            return false;
+        }
+        
+        for (const team of teams) {
+            const emailMatch = team.email === user.email;
+            const captainMatch = team.captain === user.username;
+            const userIdMatch = team.user_id === user.id;
+            
+            if (emailMatch || captainMatch || userIdMatch) {
+                return true;
+            }
+        }
+        
+        return false;
+    })();
     
     return (
-        <div className="tournoi-detail-container">
+        <div className="tournoi-detail-page">
             {confirmationMessage && (
                 <div className="confirmation-message">
-                    <i className="fas fa-check-circle"></i> {confirmationMessage}
+                    {confirmationMessage}
                 </div>
             )}
             
+            {/* En-tête du tournoi avec titre et boutons d'action */}
             <div className="tournoi-detail-header">
-                <button onClick={() => navigate('/tournoi')} className="btn-back">
-                    <i className="fas fa-arrow-left"></i> Retour
-                </button>
                 <h1>{tournoi.name}</h1>
-            </div>
-            
-            <div className="tournoi-detail-info">
-                <div className="tournoi-detail-card">
-                    <h2>Informations du tournoi</h2>
-                    <div className="info-item">
-                        <span className="info-label"><i className="fas fa-calendar-alt"></i> Date:</span>
-                        <span className="info-value">{tournoi.date}</span>
-                    </div>
-                    <div className="info-item">
-                        <span className="info-label"><i className="fas fa-users"></i> Équipes:</span>
-                        <span className="info-value">{teamsCount}/{tournoi.maxTeams} ({placesRestantes} places restantes)</span>
-                    </div>
-                    <div className="info-item">
-                        <span className="info-label"><i className="fas fa-trophy"></i> Récompense:</span>
-                        <span className="info-value">{tournoi.prizePool || "Trophée du tournoi"}</span>
-                    </div>
-                    <div className="info-item">
-                        <span className="info-label"><i className="fas fa-receipt"></i> Frais d'inscription:</span>
-                        <span className="info-value">{tournoi.entryFee || "Gratuit"}</span>
-                    </div>
-                    <div className="info-item">
-                        <span className="info-label"><i className="fas fa-clipboard-list"></i> Format:</span>
-                        <span className="info-value">{tournoi.format || "Non spécifié"}</span>
-                    </div>
-                    <div className="info-item">
-                        <span className="info-label"><i className="fas fa-info-circle"></i> Description:</span>
-                        <span className="info-value description">{tournoi.description}</span>
-                    </div>
-                </div>
-                
-                <div className="rules-card">
-                    <h2>Règles du tournoi</h2>
-                    <ul className="rules-list">
-                        <li><i className="fas fa-check-circle"></i> Chaque équipe doit avoir 5 joueurs minimum</li>
-                        <li><i className="fas fa-check-circle"></i> Les matchs durent 2 x 45 minutes</li>
-                        <li><i className="fas fa-check-circle"></i> Le format est à élimination directe</li>
-                        <li><i className="fas fa-check-circle"></i> En cas d'égalité, tirs au but directs</li>
-                        <li><i className="fas fa-check-circle"></i> Présentation 30 minutes avant le début du match</li>
-                    </ul>
-                </div>
-            </div>
-            
-            <div className="teams-section">
-                <h2>Équipes participantes ({teamsCount}/{tournoi.maxTeams})</h2>
-                {teams.length === 0 ? (
-                    <div className="no-teams">
-                        <i className="fas fa-users-slash"></i>
-                        <p>Aucune équipe inscrite pour le moment.</p>
-                        {user && !isUserRegistered && (
-                            <p className="no-teams-sub">Soyez la première équipe à vous inscrire!</p>
-                        )}
-                    </div>
-                ) : (
-                    <div className="teams-grid">
-                        {teams.map(team => (
-                            <div className="team-card" key={team.id}>
-                                <div className="team-header">
-                                    <h3>{team.name}</h3>
-                                    <span className="team-badge">
-                                        <i className="fas fa-users"></i> {team.players || 5} joueurs
-                                    </span>
-                                </div>
-                                <div className="team-info">
-                                    <div className="team-info-item">
-                                        <span className="team-info-label">Capitaine:</span>
-                                        <span className="team-info-value">{team.captain}</span>
-                                    </div>
-                                    <div className="team-info-item">
-                                        <span className="team-info-label">Inscription:</span>
-                                        <span className="team-info-value">{team.registrationDate}</span>
-                                    </div>
-                                    {user && (team.email === user.email || team.captain === user.username || (team.userId && team.userId === user.id)) && (
-                                        <div className="team-info-badge">Votre équipe</div>
-                                    )}
-                                </div>
-                            </div>
-                        ))}
-                    </div>
-                )}
-                
-                {isUserRegistered ? (
-                    <div className="registration-info">
-                        <div className="registration-status">
-                            <i className="fas fa-check-circle"></i>
-                            <p>Vous êtes inscrit à ce tournoi</p>
-                        </div>
-                        
+                <div className="tournoi-detail-actions">
+                    {isUserRegistered ? (
                         <button 
-                            className="btn-unregister-tournoi"
+                            className="btn-unregister"
                             onClick={handleUnregister}
                         >
-                            <i className="fas fa-user-minus"></i> Se désinscrire du tournoi
+                            <i className="fas fa-user-minus"></i> Se désinscrire
                         </button>
-                    </div>
-                ) : (
-                    <div className="register-section">
-                        {teamsCount < tournoi.maxTeams ? (
-                            <>
-                                <p>Pour participer à ce tournoi, veuillez retourner à la liste des tournois et cliquer sur "S'inscrire".</p>
-                                <Link to="/tournoi" className="Retour">
-                                    <i className="fas fa-arrow-left"></i> Retour à la liste des tournois
-                                </Link>
-                            </>
-                        ) : (
-                            <p className="tournament-full">
-                                <i className="fas fa-exclamation-circle"></i> 
-                                Ce tournoi est complet. Les inscriptions sont fermées.
-                            </p>
-                        )}
-                    </div>
-                )}
+                    ) : (
+                        user.role !== 'admin' && (
+                            <button 
+                                className="btn-register"
+                                onClick={() => navigate(`/tournoi`)}
+                                disabled={teamsCount >= tournoi.max_teams}
+                            >
+                                <i className="fas fa-user-plus"></i> S'inscrire
+                            </button>
+                        )
+                    )}
+                    <button onClick={() => navigate('/tournoi')} className="btn-back">
+                        <i className="fas fa-arrow-left"></i> Retour
+                    </button>
+                </div>
             </div>
             
-            {tournoi.bracket && (
-                <div className="bracket-section">
-                    <h2>Tableau du tournoi</h2>
-                    <div className="bracket-placeholder">
-                        <i className="fas fa-sitemap"></i>
-                        <p>Le tableau du tournoi sera disponible une fois le tournoi commencé.</p>
+            {/* Contenu principal avec informations et équipes */}
+            <div className="tournoi-detail-container">
+                <div className="tournoi-info-section">
+                    <div className="tournoi-info-card">
+                        <h2>Informations</h2>
+                        <ul className="tournoi-info-list">
+                            <li><strong><i className="fas fa-calendar-alt"></i> Date:</strong> {tournoi.date ? tournoi.date.split('T')[0] : tournoi.date}</li>
+                            <li><strong><i className="fas fa-users"></i> Équipes:</strong> {teamsCount}/{tournoi.max_teams} <span className="places-restantes">({placesRestantes} places restantes)</span></li>
+                            <li><strong><i className="fas fa-trophy"></i> Récompense:</strong> {tournoi.prize_pool || "Trophée du tournoi"}</li>
+                            <li><strong><i className="fas fa-receipt"></i> Frais d'inscription:</strong> {tournoi.entry_fee || "Gratuit"}</li>
+                            <li><strong><i className="fas fa-clipboard-list"></i> Format:</strong> {tournoi.format || "Non spécifié"}</li>
+                        </ul>
+                    </div>
+                    
+                    <div className="tournoi-description-card">
+                        <h2>Description</h2>
+                        <p>{tournoi.description || "Aucune description disponible pour ce tournoi."}</p>
+                    </div>
+                    
+                    <div className="tournoi-rules-card">
+                        <h2>Règlement</h2>
+                        <ul className="tournoi-rules-list">
+                            <li><i className="fas fa-check-circle"></i> Chaque équipe doit avoir 5 joueurs minimum</li>
+                            <li><i className="fas fa-check-circle"></i> Les matchs durent 2 x 45 minutes</li>
+                            <li><i className="fas fa-check-circle"></i> Le format est à élimination directe</li>
+                            <li><i className="fas fa-check-circle"></i> En cas d'égalité, tirs au but directs</li>
+                            <li><i className="fas fa-check-circle"></i> Présentation 30 minutes avant le début du match</li>
+                        </ul>
                     </div>
                 </div>
-            )}
+                
+                <div className="tournoi-teams-section">
+                    <div className="tournoi-teams-header">
+                        <h2>Équipes participantes</h2>
+                        <div className="tournoi-teams-badge">{teamsCount}/{tournoi.max_teams}</div>
+                    </div>
+                    
+                    {teams.length === 0 ? (
+                        <div className="tournoi-no-teams">
+                            <i className="fas fa-users-slash"></i>
+                            <p>Aucune équipe inscrite pour le moment.</p>
+                            {user && !isUserRegistered && tournoi.max_teams > 0 && (
+                                <p className="tournoi-no-teams-sub">Soyez la première équipe à vous inscrire!</p>
+                            )}
+                        </div>
+                    ) : (
+                        <div className="tournoi-teams-grid">
+                            {teams.map(team => (
+                                <div className={`tournoi-team-card ${(team.email === user.email || team.captain === user.username || (team.user_id && team.user_id === user.id)) ? 'your-team' : ''}`} key={team.id}>
+                                    <div className="tournoi-team-header">
+                                        <h3>{team.name}</h3>
+                                        {(team.email === user.email || team.captain === user.username || (team.user_id && team.user_id === user.id)) && (
+                                            <div className="tournoi-team-tag">Votre équipe</div>
+                                        )}
+                                    </div>
+                                    <div className="tournoi-team-info">
+                                        <div className="tournoi-team-item">
+                                            <span className="tournoi-team-label"><i className="fas fa-user-tie"></i> Capitaine:</span>
+                                            <span className="tournoi-team-value">{team.captain}</span>
+                                        </div>
+                                        <div className="tournoi-team-item">
+                                            <span className="tournoi-team-label"><i className="fas fa-users"></i> Joueurs:</span>
+                                            <span className="tournoi-team-value">{team.players || 5}</span>
+                                        </div>
+                                        <div className="tournoi-team-item">
+                                            <span className="tournoi-team-label"><i className="fas fa-calendar-check"></i> Inscription:</span>
+                                            <span className="tournoi-team-value">{team.registration_date || "Non spécifiée"}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    )}
+                </div>
+            </div>
         </div>
     );
 }

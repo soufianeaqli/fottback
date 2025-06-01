@@ -9,3 +9,21 @@
 2025-05-09 00:07:24 - Attempting to delete terrain ID: 8
 2025-05-09 00:07:24 - Deleted terrain ID: 8
 2025-05-09 00:07:24 - Deleted image: /storage/images/1746742024_eef089de6b.jpg
+2025-05-10 01:09:29 - Attempting to delete terrain ID: 3
+2025-05-10 01:09:29 - Deleted terrain ID: 3
+2025-05-10 01:09:31 - Attempting to delete terrain ID: 2
+2025-05-10 01:09:32 - Deleted terrain ID: 2
+2025-05-10 01:09:34 - Attempting to delete terrain ID: 1
+2025-05-10 01:09:34 - Deleted terrain ID: 1
+2025-05-15 10:24:06 - Attempting to delete terrain ID: 4
+2025-05-15 10:24:07 - Deleted terrain ID: 4
+2025-05-15 10:24:07 - Deleted image: /storage/images/1747263023_2b0cb576c8.jpg
+2025-05-16 17:54:44 - Attempting to delete terrain ID: 5
+2025-05-16 17:54:44 - Deleted terrain ID: 5
+2025-05-16 17:54:44 - Deleted image: /storage/images/1747410863_98f9eaa17d.jpg
+2025-05-16 18:04:35 - Attempting to delete terrain ID: 1
+2025-05-16 18:04:35 - Deleted terrain ID: 1
+2025-05-16 18:04:35 - Deleted image: /storage/images/1746836653_dcfeab8871.jpg
+2025-05-17 01:25:20 - Attempting to delete terrain ID: 3
+2025-05-17 01:25:20 - Deleted terrain ID: 3
+2025-05-17 01:25:20 - Deleted image: /storage/images/1747262009_017e57d188.jpeg

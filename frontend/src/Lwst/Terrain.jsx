@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import LoginPrompt from './LoginPrompt';
 import api from '../services/api';
 import * as reservationService from '../services/reservationService';
+import './terrain.css';
 
 function Terrain({ addReservation, reservations, user }) {
     const [terrains, setTerrains] = useState([]);
@@ -310,163 +311,95 @@ function Terrain({ addReservation, reservations, user }) {
     const isAdmin = user && user.role === 'admin';
 
     const getImageUrl = (imageUrl) => {
-        if (!imageUrl) return null;
+        if (!imageUrl) return '/placeholder.jpg';
         
-        // Si c'est une URL externe qui n'est pas de notre serveur
-        if (imageUrl.match(/^https?:\/\//) && 
-            !imageUrl.includes('localhost:8000') && 
-            !imageUrl.includes('127.0.0.1:8000')) {
-            return imageUrl;
+        if (imageUrl.startsWith('/storage')) {
+            return `http://127.0.0.1:8000${imageUrl}`;
         }
         
-        // Pour les URLs de notre serveur, normaliser vers localhost:8000
-        if (imageUrl.match(/^https?:\/\//)) {
-            const path = new URL(imageUrl).pathname;
-            return `http://localhost:8000${path}`;
-        }
-        
-        // Pour les chemins relatifs
-        const cleanUrl = imageUrl.replace(/\/+/g, '/');
-        return `http://localhost:8000${cleanUrl}`;
+        return imageUrl;
+    };
+
+    const handleViewDetails = (terrainId) => {
+        navigate(`/terrain/${terrainId}`);
     };
 
     return (
-        <div className="terrains-container">
-            {showLoginPrompt && <LoginPrompt />}
-            <h1>Terrains Disponibles</h1>
+        <>
+            {/* Section header avec plus d'espace */}
+            <div className="terrains-header">
+                <h1>Nos Terrains de Football</h1>
+                {user && user.role === 'admin' && (
+                    <button className="btn-ajt" onClick={() => setShowAddTerrainForm(true)}>
+                        <i className="fas fa-plus"></i> Ajouter un terrain
+                    </button>
+                )}
+            </div>
 
-            {isAdmin && (
-                <div className="admin-controls">
-                    {!showAddTerrainForm && (
-                        <button className="btn-ajt" onClick={() => setShowAddTerrainForm(true)}>
-                            <i className="fas fa-plus"></i> Ajouter un nouveau terrain
-                        </button>
-                    )}
-
-                    {showAddTerrainForm && (
-                        <div className="modal">
-                            <div className="modal-content">
-                                <h2>Ajouter un nouveau terrain</h2>
-                                <form onSubmit={handleAddTerrain} className="tournoi-form">
-                                    <div className="form-group">
-                                        <label>Image:</label>
-                                        <input
-                                            type="file"
-                                            accept="image/*"
-                                            onChange={handleImageChange}
-                                        />
-                                        {imagePreview && (
-                                            <img 
-                                                src={imagePreview} 
-                                                alt="Aperçu" 
-                                                style={{ 
-                                                    maxWidth: '200px', 
-                                                    marginTop: '10px',
-                                                    borderRadius: '4px'
-                                                }} 
-                                            />
-                                        )}
-                                    </div>
-                                    <div className="form-group">
-                                        <label>Titre:</label>
-                                        <input
-                                            type="text"
-                                            name="titre"
-                                            value={newTerrain.titre}
-                                            onChange={handleNewTerrainChange}
-                                            required
-                                        />
-                                    </div>
-                                    <div className="form-group">
-                                        <label>Description:</label>
-                                        <textarea
-                                            name="description"
-                                            value={newTerrain.description}
-                                            onChange={handleNewTerrainChange}
-                                            required
-                                        />
-                                    </div>
-                                    <div className="form-group">
-                                        <label>Prix (DH/heure):</label>
-                                        <input
-                                            type="number"
-                                            name="prix"
-                                            value={newTerrain.prix}
-                                            onChange={handleNewTerrainChange}
-                                            required
-                                        />
-                                    </div>
-                                    <div className="modal-actions">
-                                        <button type="submit" className="btn-modify">
-                                            <i className="fas fa-plus"></i> Ajouter
-                                        </button>
-                                        <button type="button" className="btn" onClick={() => setShowAddTerrainForm(false)}>
-                                            <i className="fas fa-times"></i> Annuler
-                                        </button>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                    )}
-                </div>
-            )}
-
+            {/* Message de confirmation */}
             {confirmationMessage && (
                 <div className="confirmation-message">
                     {confirmationMessage}
                 </div>
             )}
 
+            {/* Prompt de connexion */}
+            {showLoginPrompt && <LoginPrompt />}
+            
+            {/* Grid de terrains */}
             <div className="container">
                 {terrains.map((terrain) => (
                     <div key={terrain.id} className="terrain">
-                        {terrain.image && (
-                            <img 
-                                src={getImageUrl(terrain.image)} 
-                                alt={terrain.titre} 
-                                className="terrain-image"
-                                style={{
-                                    width: '100%',
-                                    height: '200px',
-                                    objectFit: 'cover',
-                                    borderRadius: '8px'
-                                }}
-                            />
-                        )}
+                        <img src={getImageUrl(terrain.image)} alt={terrain.titre} />
                         <div className="terrain-content">
-                            <h3>{terrain.titre}</h3>
-                            <p>{terrain.description}</p>
-                            <div className="price">Prix: {terrain.prix} DH</div>
+                            <div className="terrain-info">
+                                <h3 className="terrain-title">{terrain.titre}</h3>
+                                <p>{terrain.description}</p>
+                                <div className="terrain-price">{terrain.prix} DH/heure</div>
+                            </div>
                             <div className="terrain-actions">
-                                <Link to={`/terrain/${terrain.id}?price=${terrain.prix}`}>
-                                    <button className='bton'>
-                                        <i className="fas fa-eye"></i> Détail
-                                    </button>
-                                </Link>
-
-                                {user && !isAdmin && (
-                                    <button className='btnnr' onClick={() => handleReserveClick(terrain.id)}>
-                                        <i className="fas fa-calendar-plus"></i> Réserver
-                                    </button>
-                                )}
-
-                                {isAdmin && (
-                                    <button className='btnnn' onClick={() => handleDeleteConfirmation(terrain.id)}>
-                                        <i className="fas fa-trash"></i> Supprimer
-                                    </button>
-                                )}
+                                <button
+                                    className="btn-detail"
+                                    onClick={() => handleViewDetails(terrain.id)}
+                                >
+                                    <i className="fas fa-info-circle"></i>
+                                    Détail
+                                </button>
+                                
+                                {user ? (
+                                    <>
+                                        {user.role !== 'admin' && (
+                                            <button
+                                                className="btnn"
+                                                onClick={() => handleReserveClick(terrain.id)}
+                                            >
+                                                <i className="fas fa-calendar-alt"></i> Réserver
+                                            </button>
+                                        )}
+                                        
+                                        {user.role === 'admin' && (
+                                            <button
+                                                className="btnnn"
+                                                onClick={() => handleDeleteConfirmation(terrain.id)}
+                                            >
+                                                <i className="fas fa-trash-alt"></i> Supprimer
+                                            </button>
+                                        )}
+                                    </>
+                                ) : null}
                             </div>
                         </div>
                     </div>
                 ))}
             </div>
 
+            {/* Modal de réservation */}
             {isReservationModalOpen && selectedTerrain && (
                 <div className="modal">
                     <div className="modal-content">
                         <h2>Réserver {selectedTerrain.titre}</h2>
                         <form onSubmit={handleSubmit}>
-                            <div>
+                            <div className="form-group">
                                 <label>Nom:</label>
                                 <input
                                     type="text"
@@ -476,7 +409,7 @@ function Terrain({ addReservation, reservations, user }) {
                                     required
                                 />
                             </div>
-                            <div>
+                            <div className="form-group">
                                 <label>Email:</label>
                                 <input
                                     type="email"
@@ -486,7 +419,7 @@ function Terrain({ addReservation, reservations, user }) {
                                     required
                                 />
                             </div>
-                            <div>
+                            <div className="form-group">
                                 <label>Date:</label>
                                 <input
                                     type="date"
@@ -497,40 +430,55 @@ function Terrain({ addReservation, reservations, user }) {
                                     required
                                 />
                             </div>
-                            <div>
+                            <div className="form-group">
                                 <label>Horaire:</label>
-                                <select
-                                    name="timeSlot"
-                                    value={formData.timeSlot}
-                                    onChange={handleChange}
-                                    required
-                                >
-                                    <option value="">Sélectionner un horaire</option>
-                                    {timeSlots.map(slot => (
-                                        <option
-                                            key={slot}
-                                            value={slot}
-                                            disabled={reservations.some(r =>
+                                <div className="time-slot-container">
+                                    <select
+                                        name="timeSlot"
+                                        value={formData.timeSlot}
+                                        onChange={handleChange}
+                                        required
+                                        className="time-slot-select"
+                                    >
+                                        <option value="">Sélectionner un horaire</option>
+                                        {timeSlots.map(slot => {
+                                            const isReserved = reservations.some(r =>
                                                 r.terrainId === selectedTerrain.id &&
                                                 r.date === formData.date &&
                                                 r.timeSlot === slot
-                                            )}
-                                        >
-                                            {slot}
-                                        </option>
-                                    ))}
-                                </select>
+                                            );
+                                            return (
+                                                <option
+                                                    key={slot}
+                                                    value={slot}
+                                                    disabled={isReserved}
+                                                    className={isReserved ? 'reserved-slot' : ''}
+                                                >
+                                                    {slot} {isReserved ? '(Déjà réservé)' : ''}
+                                                </option>
+                                            );
+                                        })}
+                                    </select>
+                                    <div className="time-slot-legend">
+                                        <div className="legend-item">
+                                            <span className="legend-color available"></span> Disponible
+                                        </div>
+                                        <div className="legend-item">
+                                            <span className="legend-color reserved"></span> Déjà réservé
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                             <div className="modal-actions">
                                 <button type="submit" className="btn-ajt">
-                                    <i className="fas fa-check"></i> Réserver
+                                    <i className="fas fa-check-circle"></i> Réserver
                                 </button>
                                 <button
                                     type="button"
                                     className="btn-annuler"
                                     onClick={handleCloseReservationModal}
                                 >
-                                    <i className="fas fa-times"></i> Annuler
+                                    <i className="fas fa-times-circle"></i> Annuler
                                 </button>
                             </div>
                         </form>
@@ -538,6 +486,74 @@ function Terrain({ addReservation, reservations, user }) {
                 </div>
             )}
 
+            {/* Modal d'ajout de terrain */}
+            {showAddTerrainForm && (
+                <div className="modal">
+                    <div className="modal-content">
+                        <h2>Ajouter un nouveau terrain</h2>
+                        <form onSubmit={handleAddTerrain} className="tournoi-form">
+                            <div className="form-group">
+                                <label>Image:</label>
+                                <input
+                                    type="file"
+                                    accept="image/*"
+                                    onChange={handleImageChange}
+                                />
+                                {imagePreview && (
+                                    <img 
+                                        src={imagePreview} 
+                                        alt="Aperçu" 
+                                        style={{ 
+                                            maxWidth: '200px', 
+                                            marginTop: '10px',
+                                            borderRadius: '4px'
+                                        }} 
+                                    />
+                                )}
+                            </div>
+                            <div className="form-group">
+                                <label>Titre:</label>
+                                <input
+                                    type="text"
+                                    name="titre"
+                                    value={newTerrain.titre}
+                                    onChange={handleNewTerrainChange}
+                                    required
+                                />
+                            </div>
+                            <div className="form-group">
+                                <label>Description:</label>
+                                <textarea
+                                    name="description"
+                                    value={newTerrain.description}
+                                    onChange={handleNewTerrainChange}
+                                    required
+                                />
+                            </div>
+                            <div className="form-group">
+                                <label>Prix (DH/heure):</label>
+                                <input
+                                    type="number"
+                                    name="prix"
+                                    value={newTerrain.prix}
+                                    onChange={handleNewTerrainChange}
+                                    required
+                                />
+                            </div>
+                            <div className="modal-actions">
+                                <button type="submit" className="btn-modify">
+                                    <i className="fas fa-check-circle"></i> Ajouter
+                                </button>
+                                <button type="button" className="btn" onClick={() => setShowAddTerrainForm(false)}>
+                                    <i className="fas fa-times-circle"></i> Annuler
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            )}
+
+            {/* Modal de confirmation de suppression */}
             {showDeleteConfirmation && (
                 <div className="modal">
                     <div className="modal-content">
@@ -545,16 +561,16 @@ function Terrain({ addReservation, reservations, user }) {
                         <p>Êtes-vous sûr de vouloir supprimer ce terrain ?</p>
                         <div className="modal-actions">
                             <button className="btn-annuler" onClick={handleCancelDelete}>
-                                <i className="fas fa-times"></i> Annuler
+                                <i className="fas fa-times-circle"></i> Annuler
                             </button>
                             <button className="btn-ajt btn-danger" onClick={handleConfirmDelete}>
-                                <i className="fas fa-trash"></i> Confirmer
+                                <i className="fas fa-trash-alt"></i> Confirmer
                             </button>
                         </div>
                     </div>
                 </div>
             )}
-        </div>
+        </>
     );
 }
 
